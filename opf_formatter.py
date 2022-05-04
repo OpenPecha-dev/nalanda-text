@@ -139,13 +139,13 @@ def get_durchen_layer(collated_text, default_pub):
 
 def get_default_pub(text_id):
     if "D" in text_id:
-        return "སྡེ་"
+        return "derge"
     elif "N" in text_id:
-        return "སྣར"
+        return "narthang"
     elif "Q" in text_id:
-        return "པེ་"
+        return "peking"
     else:
-        return "ཅོ་"
+        return "chone"
 
 
 def create_opf(text_id, collated_text):
