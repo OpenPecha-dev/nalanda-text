@@ -148,7 +148,7 @@ def get_default_pub(text_id):
         return "chone"
 
 
-def create_opf(text_id, collated_text):
+def create_opf(text_id, collated_text, opf_path):
     metadata = PechaMetaData(initial_creation_type=InitialCreationEnum.input)
     pecha = OpenPechaFS(meta=metadata)
     default_pub = get_default_pub(text_id)
@@ -158,10 +158,11 @@ def create_opf(text_id, collated_text):
     base_name = pecha.set_base(base_text)
     pecha.set_layer(base_name, pagination_layer)
     pecha.set_layer(base_name, durchen_layer)
-    pecha.save(output_path = Path("./"))
+    pecha.save(output_path = opf_path)
+    return pecha
 
 
 if __name__ == "__main__":
-    text_id = "D1118"
-    collated_text = Path('./D1118_v001.txt').read_text(encoding='utf-8')
+    text_id = "D4274"
+    collated_text = Path('./D4274.txt').read_text(encoding='utf-8')
     create_opf(text_id, collated_text)
