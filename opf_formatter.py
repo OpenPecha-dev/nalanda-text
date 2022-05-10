@@ -5,7 +5,12 @@ from pathlib import Path
 from openpecha.core.annotations import Pagination, Durchen, Span
 from openpecha.core.layer import InitialCreationEnum, Layer, LayerEnum, PechaMetaData
 from openpecha.core.pecha import OpenPechaFS
+from pydantic import BaseModel
 
+class DurchenOption(BaseModel):
+    note: str
+    probability: float = None
+    apparatus: list = None
 
 def get_base_text(collated_text):
     base_text = re.sub(r"\d+-\d+", "", collated_text)
@@ -40,8 +45,7 @@ def get_pagination_layer(collated_text):
     
     return pagination_layer
 
-
-def get_note_options(default_option, note_chunk):
+def get_note_text_options(default_option, note_chunk):
     default_option = default_option.replace(":", "")
     note_chunk = re.sub('\(\d+\)', '', note_chunk)
     if "+" in note_chunk:
@@ -57,7 +61,7 @@ def get_note_options(default_option, note_chunk):
         '«ཅོ་»': 'chone',
         '«ཅོ»': 'chone'
     }
-    note_options = {
+    note_text_options = {
         'peking': '',
         'narthang': '',
         'derge': '',
@@ -68,17 +72,32 @@ def get_note_options(default_option, note_chunk):
     notes = note_parts[2::2]
     for walker, (pub, note_part) in enumerate(zip(pubs, notes)):
         if note_part:
-            note_options[pub_mapping[pub]] = note_part.replace('>', '')
+            note_text_options[pub_mapping[pub]] = note_part.replace('>', '')
         else:
             if notes[walker+1]:
-                note_options[pub_mapping[pub]] = notes[walker+1].replace('>', '')
+                note_text_options[pub_mapping[pub]] = notes[walker+1].replace('>', '')
             else:
-                note_options[pub_mapping[pub]] = notes[walker+2].replace('>', '')
-    for pub, note in note_options.items():
+                note_text_options[pub_mapping[pub]] = notes[walker+2].replace('>', '')
+    for pub, note in note_text_options.items():
         if "-" in note:
-            note_options[pub] = ""
+            note_text_options[pub] = ""
         if not note:
-            note_options[pub] = default_option
+            note_text_options[pub] = default_option
+    return note_text_options
+
+
+def get_note_options(note_text_options):
+    note_options = {
+        'peking': None,
+        'narthang': None,
+        'derge': None,
+        'chone': None
+    }
+    for pub, note_text in note_text_options.items():
+        note_options[pub] = DurchenOption(note=note_text)
+    
+
+
     return note_options
 
 
@@ -114,7 +133,8 @@ def get_durchen_annotation(prev_chunk, note_chunk, char_walker, default_pub):
     default_option = get_default_option(prev_chunk)
     ann_start = char_walker - len(default_option)
     ann_end = char_walker
-    note_options = get_note_options(default_option, note_chunk)
+    note_text_options = get_note_text_options(default_option, note_chunk)
+    note_options = get_note_options(note_text_options)
     span = Span(start=ann_start, end=ann_end)
     durchen_ann = Durchen(span=span, default=default_pub, options=note_options)
     return durchen_ann
@@ -163,6 +183,6 @@ def create_opf(text_id, collated_text, opf_path):
 
 
 if __name__ == "__main__":
-    text_id = "D4274"
-    collated_text = Path('./D4274.txt').read_text(encoding='utf-8')
-    create_opf(text_id, collated_text)
+    text_id = "D2945"
+    collated_text = Path('./data/collated_text/D2945_v038.txt').read_text(encoding='utf-8')
+    create_opf(text_id, collated_text, opf_path=Path('./'))
