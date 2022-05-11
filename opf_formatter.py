@@ -15,6 +15,7 @@ class DurchenOption(BaseModel):
 def get_base_text(collated_text):
     base_text = re.sub(r"\d+-\d+", "", collated_text)
     base_text = re.sub(r"\(\d+\) <.+?>", "", base_text)
+    base_text = base_text.replace(":","")
     return base_text
 
 
@@ -151,7 +152,8 @@ def get_durchen_layer(collated_text, default_pub):
         if re.search('\(\d+\) <.+?>', chunk):
             durchen_layer.set_annotation(get_durchen_annotation(prev_chunk, chunk, char_walker, default_pub))
         else:
-            char_walker += len(chunk)
+            clean_chunk = chunk.replace(":", "")
+            char_walker += len(clean_chunk)
         prev_chunk = chunk
     
     return durchen_layer
@@ -173,16 +175,19 @@ def create_opf(text_id, collated_text, opf_path):
     pecha = OpenPechaFS(meta=metadata)
     default_pub = get_default_pub(text_id)
     base_text = get_base_text(collated_text)
-    pagination_layer = get_pagination_layer(collated_text)
+    # pagination_layer = get_pagination_layer(collated_text)
     durchen_layer = get_durchen_layer(collated_text, default_pub)
     base_name = pecha.set_base(base_text)
-    pecha.set_layer(base_name, pagination_layer)
+    # pecha.set_layer(base_name, pagination_layer)
     pecha.set_layer(base_name, durchen_layer)
+    pecha._meta.source_metadata = {
+        "text_id": text_id
+    }
     pecha.save(output_path = opf_path)
     return pecha
 
 
 if __name__ == "__main__":
-    text_id = "D2945"
-    collated_text = Path('./data/collated_text/D2945_v038.txt').read_text(encoding='utf-8')
-    create_opf(text_id, collated_text, opf_path=Path('./'))
+    text_id = "D1133"
+    collated_text = Path('./data/normalized_collated_text/D1133_v001.txt').read_text(encoding='utf-8')
+    create_opf(text_id, collated_text, opf_path=Path('./data/opfs'))
