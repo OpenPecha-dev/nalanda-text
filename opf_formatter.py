@@ -1,16 +1,19 @@
 import re
 
+from antx import transfer
 from pathlib import Path
+from pydantic import BaseModel
+
 
 from openpecha.core.annotations import Pagination, Durchen, Span
 from openpecha.core.layer import InitialCreationEnum, Layer, LayerEnum, PechaMetaData
 from openpecha.core.pecha import OpenPechaFS
-from pydantic import BaseModel
+
 
 class DurchenOption(BaseModel):
     note: str
     probability: float = None
-    apparatus: list = None
+    features: list = None
 
 def get_base_text(collated_text):
     base_text = re.sub(r"\d+-\d+", "", collated_text)
@@ -45,6 +48,16 @@ def get_pagination_layer(collated_text):
         char_walker += len(page) + 1
     
     return pagination_layer
+
+
+def normalized_note_text_space(note_text_options, default_option):
+    patterns = [['space', "( )"]]
+    for pub, note_text in note_text_options.items():
+        if note_text != default_option and " " in default_option and "།" in note_text:
+            normalized_note_text = transfer(default_option, patterns, note_text)
+            note_text_options[pub] = normalized_note_text
+    return note_text_options
+
 
 def get_note_text_options(default_option, note_chunk):
     default_option = default_option.replace(":", "")
@@ -84,6 +97,7 @@ def get_note_text_options(default_option, note_chunk):
             note_text_options[pub] = ""
         if not note:
             note_text_options[pub] = default_option
+    note_text_options = normalized_note_text_space(note_text_options, default_option)
     return note_text_options
 
 
@@ -96,9 +110,6 @@ def get_note_options(note_text_options):
     }
     for pub, note_text in note_text_options.items():
         note_options[pub] = DurchenOption(note=note_text)
-    
-
-
     return note_options
 
 

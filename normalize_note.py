@@ -252,22 +252,22 @@ def get_right_context_valid_word(note,note_option,word=None):
 def normalize_note(collated_text,prev_end,cur_note,next_note=None,notes_iter=None):
     if tup := resolve_long_add_with_sub(collated_text,prev_end,cur_note,next_note,notes_iter):
         normalized_chunk,prev_end = tup
-        print("5")
+        
     elif tup := resolve_ms_with(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
-        print("13")
+        
     elif tup := resolve_msword_without(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
-        print("11")
+        
     elif tup := resolve_long_omission_with_sub(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
-        print("2")
+        
     elif tup := resolve_omission_with_sub(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
-        print("17")
+        
     elif tup := resolve_full_word_addition(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
-        print("4")
+        
     else:
         _,end = cur_note["span"]
         normalized_chunk=collated_text[prev_end:end]
@@ -284,7 +284,6 @@ def get_normalized_text(collated_text):
     for note_iter in notes_iter:
         index,cur_note = note_iter
         start,end = cur_note["span"]
-        print(cur_note)
         try:
             if index <len(notes)-1:
                 next_note = notes[index+1]
