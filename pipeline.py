@@ -35,7 +35,7 @@ def get_clean_base_with_notes(collated_text, text_id, text_fn):
         return collated_text
     clean_base_with_notes = get_derge_text_with_pedurma_notes(PEDURMA_OUTLINE, collated_text, derge_text, text_id)
     clean_base_with_notes = re.sub(":་", "་:", clean_base_with_notes)
-    clean_base_with_notes = re.sub("(\(\d+\) <.+?>)(.)།", "\g<2><1>།", clean_base_with_notes)
+    # clean_base_with_notes = re.sub("(\(\d+\) <.+?>)(.)།", "\g<2><1>།", clean_base_with_notes)
     clean_base_with_notes = re.sub("(\d+-\d+)\n\n\n\d+-\d+", "\g<1>", clean_base_with_notes)
     clean_base_with_notes = clean_base_with_notes.replace("\n", "")
     clean_base_with_notes = re.sub("\d+-\d+", "\n", clean_base_with_notes)
@@ -55,9 +55,9 @@ def pipeline(collated_text_path):
     Path(f'./data/normalized_collated_text/{text_fn}.txt').write_text(normalized_note_text, encoding='utf-8')
     print("INFO: Note payload readiablity improved.")
     print(f"{text_id} completed")
-    # text_opf = create_opf(text_id, normalized_note_text, OPF_PATH)
-    # logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
-    # print("INFO: OPF created")
+    text_opf = create_opf(text_id, normalized_note_text, OPF_PATH)
+    logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
+    print("INFO: OPF created")
     # text_opf.publish()
     # print("INFO: Pecha published.")
 

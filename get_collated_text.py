@@ -4,7 +4,10 @@ from pedurma.preview import get_reconstructed_text
 
 
 def get_collated_text(text_id):
-    collated_text, _ = get_reconstructed_text(text_id, bdrc_img=False)
+    try:
+        collated_text, _ = get_reconstructed_text(text_id, bdrc_img=False)
+    except:
+        collated_text = {}
     return collated_text
     
 
@@ -14,7 +17,12 @@ if __name__ == "__main__":
     collated_text_list.sort()
     collated_text_list = [text_id.stem[:-5] for text_id in collated_text_list]
     collated_text_ids = collated_text.splitlines()
-    collated_text_ids = ['D1133']
+    collated_text_ids = [
+        'N3779',
+        'N3775',
+        'N3770',
+        'N3789'
+    ]
     for collated_text_id in collated_text_ids:
         # if collated_text_id in collated_text_list:
         #     continue
