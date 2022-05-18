@@ -33,7 +33,7 @@ def get_context(chunk, type_):
             context = f"{''.join(syls[:4])}"
     else:
         context = chunk
-    return context.strip()
+    return context
 
 def clean_note(note_text):
     noise_anns = ['«པེ་»', '«སྣར་»', '«སྡེ་»', '«ཅོ་»', '\(\d+\) ', ':']
@@ -49,7 +49,7 @@ def get_default_option(prev_chunk):
         syls = get_syls(prev_chunk)
         if syls:
             default_option = syls[-1]
-    return default_option
+    return default_option.strip()
 
 def get_note_options(default_option, note_chunk):
     note_chunk = re.sub('\(\d+\) ', '', note_chunk)
@@ -376,9 +376,36 @@ def is_word(word):
         return True
     return False
 
-def sum_up_syll(syls):
-    word =""
-    for syl in syls:
-        word+=syl
+def sum_up_syll(syls,dir=None):
 
-    return word             
+    word = is_shad_present(syls,dir)
+    if word:
+        return word         
+    return ""  
+
+def is_shad_present(syls,dir):
+    words = ""
+    for syl in syls:
+        words+=syl
+
+    if "།" in words or " " in words:
+        if dir == "left":
+            if len(syls) == 1:
+                return ""
+            else:
+                sum_word = ""
+                for word in reversed(words):
+                    if word == "།" or word == " ":
+                        return sum_word
+                    sum_word=word+sum_word
+        elif dir =="right":
+            if len(syls) == 1:
+                return syls[0]
+            else:
+                sum_word=""        
+                for word in words:
+                    sum_word = sum_word+word
+                    if word == "།":
+                        return sum_word
+
+    return words
