@@ -2,35 +2,41 @@ from email import charset
 from importlib.resources import read_text
 import re
 from pathlib import Path
+
+from pyparsing import col
 from utils import *
+import logging
+
+logging.basicConfig(filename="err.log",format='%(message)s')
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 
 def resolve_ms_with(collated_text,prev_end,note):
+    note_start,note_end = note["span"]  
     if "+" in note["real_note"] or "-" in note["real_note"]:
         return
+    elif ":" not in collated_text[prev_end:note_start]:
+        return
+    index_set = set()
+    left_syls = get_syls(note["left_context"])
+    note_options = note["alt_options"]
+    new_note = collated_text[note_start:note_end]
+    for note_option in note_options:
+        option_start,option_end = note_option["span"]
+        tup = get_left_context_valid_word(note,note_option["note"])
+        if tup:
+            word,i = tup
+            new_note = new_note[:option_start-note_start]+word+new_note[option_end-note_start:]
+            index_set.add(i)
 
-    note_start,note_end = note["span"]  
-    if ":" in collated_text[prev_end:note_start]:
-        index_set = set()
-        left_syls = get_syls(note["left_context"])
-        note_options = note["alt_options"]
-        new_note = collated_text[note_start:note_end]
-        for note_option in note_options:
-            option_start,option_end = note_option["span"]
-            tup = get_left_context_valid_word(note,note_option["note"])
-            if tup:
-                word,i = tup
-                new_note = new_note[:option_start-note_start]+word+new_note[option_end-note_start:]
-                index_set.add(i)
-
-        if new_note != collated_text[note_start:note_end] and len(list(index_set)) == 1:
-            left_syls = [token.text for token in get_tokens(note["left_context"])]
-            before_default_word = convert_syl_to_word(left_syls[i:])
-            new_default_word = before_default_word+note["default_option"]
-            normalized_chunk=collated_text[prev_end:note_start-len(new_default_word)-1]+":"+new_default_word+new_note
-            prev_end = note_end
-            return normalized_chunk,prev_end
-    return 
+    if new_note != collated_text[note_start:note_end] and len(list(index_set)) == 1:
+        left_syls = [token.text for token in get_tokens(note["left_context"])]
+        before_default_word = convert_syl_to_word(left_syls[i:])
+        new_default_word = before_default_word+note["default_option"]
+        normalized_chunk=collated_text[prev_end:note_start-len(new_default_word)-1]+":"+new_default_word+new_note
+        prev_end = note_end
+        return normalized_chunk,prev_end
 
 
 def resolve_msword_without(collated_text,prev_end,note):
@@ -74,7 +80,7 @@ def resolve_full_word_addition(collated_text,prev_end,note):
         for note_option in note_options:
             if "+" in note_option:
                 left_syll = get_syls(note["left_context"])
-                note["left_context"] = sum_up_syll(left_syll[:-1])
+                note["left_context"] = sum_up_syll(left_syll[:-1],"left")
                 tup = get_left_context_valid_word(note,note_option,left_syll[-1])
                 if tup:
                     word,char_walker = tup
@@ -115,17 +121,25 @@ def resolve_omission_with_sub(collated_text,prev_end,note):
 
         left_word,right_word = tup
         new_payload = left_word+right_word
-        normalized_payload = new_payload.replace("།","་")
         x=1 if collated_text[note_start-len(note["default_option"])-1] == ":" else 0
         new_left_context = collated_text[prev_end:note_start-len(note["default_option"])-len(left_word)-x]
         new_default_word = collated_text[note_start-len(note["default_option"])-len(left_word)-x:note_start].replace(":","")+right_word
-        normalized_chunk =new_left_context +":"+ new_default_word+collated_text[note_start:pyld_start]+normalized_payload+">" 
+        normalized_chunk =new_left_context +":"+ new_default_word+collated_text[note_start:pyld_start]+new_payload+">" 
         prev_end = note_end +len(right_word)
         return normalized_chunk,prev_end
 
     return
 
 
+def form_word(note):
+    left_context = note["left_context"]
+    tokens = get_tokens(left_context)
+    new_default_word = ""
+    for token in reversed(tokens):
+        new_default_word=token.text+new_default_word
+        if token.pos not in ["PUNCT","PART"] and token.text.strip() != "།":
+            return new_default_word
+    return        
 
 
 def resolve_long_omission_with_sub(collated_text,prev_end,note):
@@ -156,7 +170,7 @@ def resolve_long_add_with_sub(collated_text,prev_end,cur_note,next_note,notes_it
 
     if '-' in cur_note_options[0] and '+' in next_note_options[0]:
         left_syll = get_syls(cur_note["left_context"])
-        cur_note["left_context"] = sum_up_syll(left_syll[:-1])
+        cur_note["left_context"] = sum_up_syll(left_syll[:-1],"left")
         tup = get_left_context_valid_word(cur_note,cur_note_options[0],left_syll[-1])
         if tup:
             word,char_walker = tup
@@ -199,30 +213,19 @@ def side_note_valid_word(note):
 
     for i in range(left_index-1,-1,-1):
         for j in range(0,right_index):
-            left_word = sum_up_syll(left_syls[i+1:])
-            right_word = sum_up_syll(right_syls[:j+1])
+            left_word = sum_up_syll(left_syls[i+1:],"left")
+            right_word = sum_up_syll(right_syls[:j+1],"right")
             word =left_word + right_word
             if is_word(word):
                 return left_word,right_word
     return
-
-
-def form_word(note):
-    left_context = note["left_context"]
-    tokens = get_tokens(left_context)
-    new_default_word = ""
-    for token in reversed(tokens):
-        new_default_word=token.text+new_default_word
-        if token.pos not in ["PUNCT","PART"] and token.text.strip() != "།":
-            return new_default_word
-    return        
 
 def get_left_context_valid_word(note,note_option,word=None):
     char_walker=-1
     if word == None:
         word = note_option.replace("+","")
     left_syls = get_syls(note["left_context"])
-    if len(left_syls) == 0 or left_syls[-1].strip()[-1] == "།":
+    if len(left_syls) == 0 or left_syls[-1][-1] in("།"," "):
         return
     while char_walker >= -len(left_syls) and char_walker>=-3:
         word=left_syls[char_walker]+word
@@ -252,20 +255,57 @@ def get_right_context_valid_word(note,note_option,word=None):
         char_walker+=1
     return
 
+def resolve_mono_part(collated_text,prev_end,note):
+    if "+" in note["real_note"] or "-" in note["real_note"]:
+        return 
+    note_options = note["alt_options"]    
+    note_start,note_end = note["span"]  
+    new_note = collated_text[note_start:note_end]
+    if left_context_valid_word := get_left_context_valid_word(note,note_options,""):
+        pass
+    else:
+        return
+
+    for note_option in note_options:
+        option_start,option_end = note_option["span"]
+        tokens = get_tokens(note_option["note"])
+        token_pos = get_token_pos(note_option["note"])
+        if len(tokens) != 1 or token_pos != "PART":
+            return
+        new_note = new_note[:option_start-note_start]+left_context_valid_word[0]+note_option["note"]+new_note[option_end-note_start:]
+
+       
+    x=1 if collated_text[note_start-len(note["default_option"])-1] == ":" else 0
+    new_left_context = collated_text[prev_end:note_start-len(note["default_option"])-len(left_context_valid_word[0])-x]
+    new_default_word = collated_text[note_start-len(note["default_option"])-len(left_context_valid_word[0])-x:note_start].replace(":","")
+    normalized_chunk = new_left_context+":"+new_default_word+new_note
+    prev_end = note_end
+
+    return normalized_chunk,prev_end
+
 
 def normalize_note(collated_text,prev_end,cur_note,next_note=None,notes_iter=None):
     if tup := resolve_long_add_with_sub(collated_text,prev_end,cur_note,next_note,notes_iter):
         normalized_chunk,prev_end = tup
+        print("5")
+    elif tup := resolve_mono_part(collated_text,prev_end,cur_note):
+        normalized_chunk,prev_end = tup
+        print("15")
     elif tup := resolve_ms_with(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
+        print("13")
     elif tup := resolve_msword_without(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
+        print("11")
     elif tup := resolve_long_omission_with_sub(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
+        print("2")
     elif tup := resolve_omission_with_sub(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
+        print("17")
     elif tup := resolve_full_word_addition(collated_text,prev_end,cur_note):
         normalized_chunk,prev_end = tup
+        print("4")
     else:
         _,end = cur_note["span"]
         normalized_chunk=collated_text[prev_end:end]
@@ -281,16 +321,11 @@ def get_normalized_text(collated_text):
     notes_iter = iter(enumerate(notes,0)) 
     for note_iter in notes_iter:
         index,cur_note = note_iter
-        start,end = cur_note["span"]
-        try:
-            if index <len(notes)-1:
-                next_note = notes[index+1]
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
-            else:
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
-        except:
-            normalized_chunk=collated_text[prev_end:end]
-            prev_end = end
+        if index <len(notes)-1:
+            next_note = notes[index+1]
+            normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
+        else:
+            normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
         normalized_collated_text+=normalized_chunk
 
     normalized_collated_text+=collated_text[prev_end:]
@@ -298,4 +333,9 @@ def get_normalized_text(collated_text):
     return normalized_collated_text  
 
 
+if __name__ == "__main__": 
+    paths = Path("./clean_base_collated_text").iterdir()
+    collated_text = Path("./test.txt").read_text(encoding="utf-8")
+    normalized_collated_text = get_normalized_text(collated_text)
+    Path("./gen_test.txt").write_text(normalized_collated_text)
                 
