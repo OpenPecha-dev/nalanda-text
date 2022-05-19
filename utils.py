@@ -107,13 +107,9 @@ def get_alt_options(note):
     note_options = note['note_options']
     for note in set(note_options.values()):
         if note.replace("\n","") != default_option and note != "":
-            z = re.search(note,real_note)
-            if real_note[z.start()-1] !="+": 
-                option_start = start+z.start()
-                option_end = start+z.end()
-            else:
-                option_start=start+z.start()-1
-                option_end=start+z.end()    
+            z = re.search(f"»(\+|-)?{note}",real_note)
+            option_start = start+z.start()+1
+            option_end = start+z.end()
             alt_options.append({"note":note,"span":(option_start,option_end)})
     
     alt_options = sort_options(alt_options)

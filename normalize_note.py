@@ -2,7 +2,6 @@ from email import charset
 from importlib.resources import read_text
 import re
 from pathlib import Path
-
 from pyparsing import col
 from utils import *
 import logging
@@ -282,7 +281,7 @@ def resolve_mono_part(collated_text,prev_end,note):
     return normalized_chunk,prev_end
 
 def skip_notes(cur_note):
-    if "༕" in cur_note["real_note"]:
+    if "༕" in cur_note["real_note"] or "!" in cur_note["real_note"]:
         return True
     return
 
@@ -321,7 +320,13 @@ def get_normalized_text(collated_text):
     for note_iter in notes_iter:
         index,cur_note = note_iter
         _,end = cur_note["span"]
-        try:
+        if index <len(notes)-1:
+                next_note = notes[index+1]
+                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
+        else:
+            normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
+        normalized_collated_text+=normalized_chunk
+        """ try:
             if index <len(notes)-1:
                 next_note = notes[index+1]
                 normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
@@ -330,7 +335,7 @@ def get_normalized_text(collated_text):
             normalized_collated_text+=normalized_chunk
         except:
             normalized_collated_text+=collated_text[prev_end:end]
-            prev_end = end   
+            prev_end = end    """
 
     normalized_collated_text+=collated_text[prev_end:]
 
