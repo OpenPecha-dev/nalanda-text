@@ -280,35 +280,44 @@ def resolve_mono_part(collated_text,prev_end,note):
 
     return normalized_chunk,prev_end
 
+def is_punct_note(note):
+    puncts = ["༎༎", "༎ ༎", "༎"]
+    for punct in puncts:
+        if note == punct:
+            return True
+    return False
+
 def skip_notes(cur_note):
-    if "༕" in cur_note["real_note"] or "!" in cur_note["real_note"]:
+    if "༕" in cur_note["real_note"] or "!" in cur_note["real_note"] or is_punct_note(cur_note["real_note"]):
         return True
     return
 
 def normalize_note(collated_text,prev_end,cur_note,next_note=None,notes_iter=None):
-    if skip_notes(cur_note):
-        _,end = cur_note["span"]
+    _,end = cur_note["span"]
+    try:
+        if skip_notes(cur_note):
+            normalized_chunk = collated_text[prev_end:end]
+            prev_end = end
+        elif tup := resolve_long_add_with_sub(collated_text,prev_end,cur_note,next_note,notes_iter):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_mono_part(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_ms_with(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_msword_without(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_long_omission_with_sub(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_omission_with_sub(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        elif tup := resolve_full_word_addition(collated_text,prev_end,cur_note):
+            normalized_chunk,prev_end = tup
+        else:
+            normalized_chunk=collated_text[prev_end:end]
+            prev_end = end
+    except:
         normalized_chunk = collated_text[prev_end:end]
         prev_end = end
-    elif tup := resolve_long_add_with_sub(collated_text,prev_end,cur_note,next_note,notes_iter):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_mono_part(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_ms_with(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_msword_without(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_long_omission_with_sub(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_omission_with_sub(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    elif tup := resolve_full_word_addition(collated_text,prev_end,cur_note):
-        normalized_chunk,prev_end = tup
-    else:
-        _,end = cur_note["span"]
-        normalized_chunk=collated_text[prev_end:end]
-        prev_end = end
-
     return normalized_chunk,prev_end
 
 
