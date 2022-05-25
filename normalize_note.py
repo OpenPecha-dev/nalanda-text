@@ -290,7 +290,7 @@ def is_punct_note(note):
 def skip_notes(cur_note):
     if "༕" in cur_note["real_note"] or "!" in cur_note["real_note"] or is_punct_note(cur_note["real_note"]):
         return True
-    return
+    return False
 
 def normalize_note(collated_text,prev_end,cur_note,next_note=None,notes_iter=None):
     _,end = cur_note["span"]
