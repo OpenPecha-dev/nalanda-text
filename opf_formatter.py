@@ -55,6 +55,7 @@ def normalized_note_text_space(note_text_options, default_option):
     for pub, note_text in note_text_options.items():
         if note_text != default_option and " " in default_option and "།" in note_text:
             normalized_note_text = transfer(default_option, patterns, note_text)
+            normalized_note_text = normalized_note_text.replace("། ། །།", "།། །།")
             note_text_options[pub] = normalized_note_text
     return note_text_options
 
@@ -199,6 +200,6 @@ def create_opf(text_id, collated_text, opf_path):
 
 
 if __name__ == "__main__":
-    text_id = "D1133"
-    collated_text = Path('./data/normalized_collated_text/D1133_v001.txt').read_text(encoding='utf-8')
-    create_opf(text_id, collated_text, opf_path=Path('./data/opfs'))
+    text_id = "D3871"
+    collated_text = Path('./data/collated_text/D4274_v108.txt').read_text(encoding='utf-8')
+    create_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))

@@ -6,6 +6,23 @@ from botok import WordTokenizer
 
 wt = WordTokenizer()
 
+def reformat_line_break(text):
+    reformated_text = ''
+    text = text.replace("\n", "")
+    chunks = re.split('(\(\d+\) <.+?>)', text)
+    walker = 1
+    for chunk in chunks:
+        if re.search('\(\d+\) <.+?>', chunk):
+            if walker == 30:
+                reformated_text += f"{chunk}\n"
+                walker = 0
+            else:
+                reformated_text += chunk
+                walker += 1
+        else:
+            reformated_text += chunk
+    return reformated_text
+
 def get_syls(text):
     chunks = re.split('(་|།།|།)',text)
     syls = []

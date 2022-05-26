@@ -1,7 +1,10 @@
+from __future__ import annotations
 import re
 from pathlib import Path
 from antx.core import transfer
 from pedurma.utils import from_yaml
+
+from utils import reformat_line_break
 
 
 
@@ -78,26 +81,32 @@ def reformat_text(text):
 def get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text, text_id):
     derge_text = f'{get_text_title(pedurma_outline, text_id, derge_text)}\n{derge_text}'
     derge_text_with_pedurma_notes = transfer_pedurma_notes(pedurma_text, derge_text)
+    # derge_text_with_pedurma_notes = reformat_line_break(derge_text_with_pedurma_notes)
     pedurma_with_derge_text = transfer_line_break(derge_text_with_pedurma_notes, pedurma_text)
     return pedurma_with_derge_text
 
 
 if __name__ == "__main__":
-    pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
-    text_paths = list(Path('./data/collated_text').iterdir())
-    text_paths.sort()
-    for text_path in text_paths:
-        text_fn = text_path.stem
-        text_id = text_path.stem[:-5]
-        try:
-            derge_text = Path(f'./data/derge_res/hfmls/{text_id}.txt').read_text(encoding='utf-8')
-        except:
-            derge_text = ""
-        if derge_text:
-            pedurma_text = text_path.read_text(encoding='utf-8')
-            derge_with_notes = get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text, text_id)
-            Path(f'./data/clean_base_collated_text/{text_fn}.txt').write_text(derge_with_notes, encoding='utf-8')
-
+    # pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
+    # text_paths = list(Path('./data/collated_text').iterdir())
+    # text_paths.sort()
+    # for text_path in text_paths:
+    #     text_fn = text_path.stem
+    #     text_id = text_path.stem[:-5]
+    #     try:
+    #         derge_text = Path(f'./data/derge_res/hfmls/{text_id}.txt').read_text(encoding='utf-8')
+    #     except:
+    #         derge_text = ""
+    #     if derge_text:
+    #         pedurma_text = text_path.read_text(encoding='utf-8')
+    #         derge_with_notes = get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text, text_id)
+    #         Path(f'./data/clean_base_collated_text/{text_fn}.txt').write_text(derge_with_notes, encoding='utf-8')
+    src = Path('./data/opfs/collated_opfs/PD01B8805/PD01B8805.opf/base/00001.txt').read_text(encoding='utf-8')
+    trg = Path('./data/opfs/derge_opfs/PD01B8804/PD01B8804.opf/base/00001.txt').read_text(encoding='utf-8')
+    trg = trg.replace("\n", "")
+    annotations = [["linebreak", "(\n)"]]
+    new_trg = transfer(src, annotations, trg)
+    Path('./base.txt').write_text(new_trg, encoding='utf-8')
 
 
     

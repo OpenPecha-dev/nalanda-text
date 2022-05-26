@@ -1,8 +1,5 @@
-from email import charset
-from importlib.resources import read_text
 import re
 from pathlib import Path
-from pyparsing import col
 from utils import *
 import logging
 
@@ -281,7 +278,7 @@ def resolve_mono_part(collated_text,prev_end,note):
     return normalized_chunk,prev_end
 
 def is_punct_note(note):
-    puncts = ["༎༎", "༎ ༎", "༎"]
+    puncts = ["༎༎", "༎ ༎", "༎", "། །", "ཿ"]
     for punct in puncts:
         if note == punct:
             return True
@@ -347,8 +344,8 @@ def get_normalized_text(collated_text):
             prev_end = end    """
 
     normalized_collated_text+=collated_text[prev_end:]
-
-    return normalized_collated_text  
+    reformated_normalized_text = reformat_line_break(normalized_collated_text)
+    return reformated_normalized_text  
 
 
 if __name__ == "__main__": 
