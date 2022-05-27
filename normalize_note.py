@@ -284,8 +284,15 @@ def is_punct_note(note):
             return True
     return False
 
+def is_doubtful_note(note):
+    if "༕" in note or "!" in note:
+        return True
+    else:
+        return False
+
+
 def skip_notes(cur_note):
-    if "༕" in cur_note["real_note"] or "!" in cur_note["real_note"] or is_punct_note(cur_note["real_note"]):
+    if is_doubtful_note(cur_note['real_note']) or is_punct_note(cur_note["real_note"]):
         return True
     return False
 

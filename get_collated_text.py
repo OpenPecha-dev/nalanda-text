@@ -9,26 +9,30 @@ def get_collated_text(text_id):
     except:
         collated_text = {}
     return collated_text
+
+def clean_collated_text(collated_text_path):
+    collated_text = collated_text_path.read_text(encoding='utf-8')
+    collated_text = collated_text.replace("།་","༎")
+    collated_text = collated_text.replace("། ་", "་")
+    collated_text_path.write_text(collated_text, encoding="utf-8")
+
     
 
 if __name__ == "__main__":
-    collated_text = Path('./data/collated_text_list.txt').read_text(encoding='utf-8')
-    collated_text_list = list(Path('./data/collated_text').iterdir())
-    collated_text_list.sort()
-    collated_text_list = [text_id.stem[:-5] for text_id in collated_text_list]
-    collated_text_ids = collated_text.splitlines()
-    collated_text_ids = [
-        'N3779',
-        'N3775',
-        'N3770',
-        'N3789'
-    ]
-    for collated_text_id in collated_text_ids:
-        # if collated_text_id in collated_text_list:
-        #     continue
-        collated_text = get_collated_text(collated_text_id)
-        while not collated_text:
-            collated_text = get_collated_text(collated_text_id)
-        for vol_id, text in collated_text.items():
-            Path(f'./data/collated_text/{collated_text_id}_{vol_id}.txt').write_text(text, encoding='utf-8')
-        print(f'{collated_text_id} completed..')
+    # collated_text = Path('./data/ready_text.txt').read_text(encoding='utf-8')
+    # collated_text_list = list(Path('./data/collated_text').iterdir())
+    # collated_text_list.sort()
+    # collated_text_list = [text_id.stem[:-5] for text_id in collated_text_list]
+    # collated_text_ids = collated_text.splitlines()
+    # for collated_text_id in collated_text_ids:
+    #     # if collated_text_id in collated_text_list:
+    #     #     continue
+    #     collated_text = get_collated_text(collated_text_id)
+    #     while not collated_text:
+    #         collated_text = get_collated_text(collated_text_id)
+    #     for vol_id, text in collated_text.items():
+    #         Path(f'./data/collated_text/{collated_text_id}_{vol_id}.txt').write_text(text, encoding='utf-8')
+    #     print(f'{collated_text_id} completed..')
+    collated_text_paths = list(Path('./data/collated_text').iterdir())
+    for collated_text_path in collated_text_paths:
+        clean_collated_text(collated_text_path)

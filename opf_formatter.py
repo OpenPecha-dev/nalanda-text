@@ -5,10 +5,11 @@ from pathlib import Path
 from pydantic import BaseModel
 
 
-from openpecha.core.annotations import Pagination, Durchen, Span
-from openpecha.core.layer import InitialCreationEnum, Layer, LayerEnum, PechaMetaData
+from openpecha.core.annotations import Durchen, Span
+from openpecha.core.ids import get_open_pecha_id
+from openpecha.core.layer import Layer, LayerEnum
+from openpecha.core.metadata import PechaMetadata, InitialCreationType
 from openpecha.core.pecha import OpenPechaFS
-
 
 class DurchenOption(BaseModel):
     note: str
@@ -20,35 +21,6 @@ def get_base_text(collated_text):
     base_text = re.sub(r"\(\d+\) <.+?>", "", base_text)
     base_text = base_text.replace(":","")
     return base_text
-
-
-def get_pages(collated_text):
-    chunks = re.split(r"(\d+-\d+)", collated_text)
-    pages = {}
-    cur_page = ""
-    for chunk in chunks:
-        if re.search(r"\d+-\d+", chunk):
-            pg_num = re.search(r"\d+-(\d+)", chunk).group(1)
-            pages[pg_num] = cur_page
-            cur_page = ""
-        else:
-            cur_page = chunk
-        
-    return pages 
-
-
-def get_pagination_layer(collated_text):
-    pagination_layer = Layer(annotation_type=LayerEnum.pagination)
-    collated_text = re.sub(r"\(\d+\) <.+?>", "", collated_text)
-    pages = get_pages(collated_text)
-    char_walker = 0
-    for pg_no, page in pages.items():
-        span = Span(start=char_walker, end=char_walker + len(page))
-        pagination_layer.set_annotation(Pagination(span=span, imgnum=int(pg_no)))
-        char_walker += len(page) + 1
-    
-    return pagination_layer
-
 
 def normalized_note_text_space(note_text_options, default_option):
     patterns = [['space', "( )"]]
@@ -98,7 +70,7 @@ def get_note_text_options(default_option, note_chunk):
             note_text_options[pub] = ""
         if not note:
             note_text_options[pub] = default_option
-    note_text_options = normalized_note_text_space(note_text_options, default_option)
+    # note_text_options = normalized_note_text_space(note_text_options, default_option)
     return note_text_options
 
 
@@ -182,15 +154,15 @@ def get_default_pub(text_id):
         return "chone"
 
 
-def create_opf(text_id, collated_text, opf_path):
-    metadata = PechaMetaData(initial_creation_type=InitialCreationEnum.input)
+def create_open_opf(text_id, collated_text, opf_path):
+    metadata = PechaMetadata(initial_creation_type=InitialCreationType.input)
     pecha = OpenPechaFS(meta=metadata)
+    pecha._pecha_id = get_open_pecha_id()
+    pecha.reset_base_and_layers()
     default_pub = get_default_pub(text_id)
     base_text = get_base_text(collated_text)
-    # pagination_layer = get_pagination_layer(collated_text)
     durchen_layer = get_durchen_layer(collated_text, default_pub)
     base_name = pecha.set_base(base_text)
-    # pecha.set_layer(base_name, pagination_layer)
     pecha.set_layer(base_name, durchen_layer)
     pecha._meta.source_metadata = {
         "text_id": text_id
@@ -199,7 +171,8 @@ def create_opf(text_id, collated_text, opf_path):
     return pecha
 
 
+
 if __name__ == "__main__":
     text_id = "D3871"
     collated_text = Path('./data/collated_text/D4274_v108.txt').read_text(encoding='utf-8')
-    create_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))
+    create_open_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))

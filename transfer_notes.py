@@ -1,11 +1,16 @@
 import re
+import shutil
 from antx import transfer
 from pathlib import Path
 
-from opf_formatter import create_opf
-
+from opf_formatter import create_open_opf
 from openpecha.blupdate import PechaBaseUpdate
+from openpecha.core.ids import get_open_pecha_id
+from openpecha.core.metadata import PechaMetadata, InitialCreationType
+from openpecha.core.pecha import OpenPechaFS
 from openpecha.utils import dump_yaml, load_yaml
+
+from opf_serializer import get_base_names, opf_to_txt
 
 
 def find_title(hfml):
@@ -17,16 +22,17 @@ def find_title(hfml):
 
 
 def has_title(hfml):
-    if re.search("\{D.+?\}༄༅༅། །རྒྱ་གར་སྐད་དུ།", hfml):
+    if re.search("\{D.+?\}༄༅། །རྒྱ་གར་", hfml) or re.search("\{D.+?\}༄༅༅། །རྒྱ་གར་", hfml):
         return False
     else:
         return True
 
 
 def get_text_title(pedurma_outline, text_id, hfml):
+    title = ""
     if has_title(hfml):
         return ""
-    title = find_title(hfml)
+    # title = find_title(hfml)
     if not title:
         for _, outline_info in pedurma_outline.items():
                 if outline_info['rkts_id'] == text_id:
@@ -44,36 +50,54 @@ def get_derge_text(pedurma_outline, text_id):
     derge_text = derge_text.replace("\n", "")
     return derge_text
 
-def get_derge_text_with_pedurma_line_break(collated_opf, derge_text):
-    collated_text = collated_opf.read_base_file("00001")
-    patterns = [["line_break", "(\n)"]]
+def get_derge_text_with_pedurma_line_break(collated_text, derge_text):
+    collated_text = re.sub("\(\d+\) <.+?>", "", collated_text)
+    patterns = [["line_break", "(\n)"], ['double_tesg', "(:)"]]
     derge_text_with_pedurma_line_break = transfer(collated_text, patterns, derge_text)
     return derge_text_with_pedurma_line_break
-    
 
-def get_derge_text_with_notes(collated_text_path, pedurma_outline):
-    text_id = collated_text_path.stem[:5]
-    collated_text = collated_text_path.read_text(encoding="utf-8")
-    collated_opf = create_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))
+def create_derge_opf(text_id, derge_text, opf_path):
+    metadata = PechaMetadata(initial_creation_type=InitialCreationType.input)
+    derge_pecha = OpenPechaFS(meta=metadata)
+    derge_pecha._pecha_id = get_open_pecha_id()
+    derge_pecha.reset_base_and_layers()
+    derge_pecha.set_base(derge_text)
+    derge_pecha._meta.source_metadata = {
+        "text_id": text_id
+    }
+    derge_pecha.save(output_path = opf_path)
+    return derge_pecha
+
+
+def get_derge_text_with_notes(text_id, collated_text, pedurma_outline):
+    collated_opf = create_open_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))
     collated_opf_path = collated_opf.opf_path
     derge_text = get_derge_text(pedurma_outline, text_id)
-    derge_text_with_pedurma_line_break = get_derge_text_with_pedurma_line_break(collated_opf, derge_text)
-    derge_opf = create_opf(text_id, derge_text_with_pedurma_line_break, opf_path=Path('./data/opfs/derge_opfs'))
+    derge_text_with_pedurma_line_break = get_derge_text_with_pedurma_line_break(collated_text, derge_text)
+    derge_opf = create_derge_opf(text_id, derge_text_with_pedurma_line_break, opf_path=Path('./data/opfs/derge_opfs'))
     derge_opf_path = derge_opf.opf_path
-    collated_durchen_layer = collated_opf.read_layers_file("00001", "Durchen")
-    dump_yaml(collated_durchen_layer, (derge_opf_path / "layers/00001/Durchen.yml"))
-    transfer_durchen_layer(collated_opf_path, derge_opf_path)
+    collated_base_names = get_base_names(collated_opf_path)
+    derge_base_names = get_base_names(derge_opf_path)
+    for derge_base_name,collated_base_name in zip(derge_base_names, collated_base_names):
+        collated_durchen_layer = collated_opf.read_layers_file(collated_base_name, "Durchen")
+        (derge_opf_path / f"layers/").mkdir()
+        (derge_opf_path / f"layers/{derge_base_name}").mkdir()
+        dump_yaml(collated_durchen_layer, (derge_opf_path / f"layers/{derge_base_name}/Durchen.yml"))
+        transfer_durchen_layer(collated_opf_path, derge_opf_path, collated_base_name, derge_base_name)
+    derge_text_with_notes = opf_to_txt(derge_opf_path)
+    shutil.rmtree(str(collated_opf_path.parent))
+    shutil.rmtree(str(derge_opf_path.parent))
+    return derge_text_with_notes
 
 
 
-def transfer_durchen_layer(src_opf, trg_opf):
+def transfer_durchen_layer(src_opf, trg_opf, src_base_name, trg_base_name):
     pecha_updater = PechaBaseUpdate(src_opf, trg_opf)
-    pecha_updater.update_vol("00001")
+    pecha_updater.update_vol(src_base_name, trg_base_name)
 
 if __name__ == "__main__":
-    # src_opf = Path('./data/opfs/collated_opfs/PD01B8805/PD01B8805.opf')
-    # trg_opf = Path('./data/opfs/derge_opfs/PD01B8804/PD01B8804.opf')
-    # transfer_durchen_layer(src_opf, trg_opf)
     pedurma_outline = load_yaml(Path('./data/pedurma_outline.yml'))
     collated_text_path = Path('./data/collated_text/D4274_v108.txt')
-    get_derge_text_with_notes(collated_text_path, pedurma_outline)
+    texts = get_derge_text_with_notes(collated_text_path, pedurma_outline)
+    for base_name, text in texts.items():
+        Path(f"./data/serializer_output/{base_name}.txt").write_text(text, encoding='utf-8')
