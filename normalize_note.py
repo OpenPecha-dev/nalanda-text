@@ -356,8 +356,8 @@ def get_normalized_text(collated_text):
 
 
 if __name__ == "__main__": 
-    paths = Path("./clean_base_collated_text").iterdir()
-    collated_text = Path("./test.txt").read_text(encoding="utf-8")
+    # paths = Path("./clean_base_collated_text").iterdir()
+    collated_text = Path("./data/clean_base_collated_text/D1798_v018.txt").read_text(encoding="utf-8")
     normalized_collated_text = get_normalized_text(collated_text)
     Path("./gen_test.txt").write_text(normalized_collated_text)
                 

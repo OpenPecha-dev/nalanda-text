@@ -1,6 +1,7 @@
 import re
 
 from antx import transfer
+from collections import defaultdict
 from pathlib import Path
 from pydantic import BaseModel
 
@@ -8,7 +9,7 @@ from pydantic import BaseModel
 from openpecha.core.annotations import Durchen, Span
 from openpecha.core.ids import get_open_pecha_id
 from openpecha.core.layer import Layer, LayerEnum
-from openpecha.core.metadata import PechaMetadata, InitialCreationType
+from openpecha.core.metadata import OpenPechaMetadata, InitialCreationType
 from openpecha.core.pecha import OpenPechaFS
 
 class DurchenOption(BaseModel):
@@ -155,10 +156,8 @@ def get_default_pub(text_id):
 
 
 def create_open_opf(text_id, collated_text, opf_path):
-    metadata = PechaMetadata(initial_creation_type=InitialCreationType.input)
-    pecha = OpenPechaFS(meta=metadata)
-    pecha._pecha_id = get_open_pecha_id()
-    pecha.reset_base_and_layers()
+    metadata = OpenPechaMetadata(initial_creation_type=InitialCreationType.input)
+    pecha = OpenPechaFS(metadata=metadata, base={}, layers=defaultdict(dict))
     default_pub = get_default_pub(text_id)
     base_text = get_base_text(collated_text)
     durchen_layer = get_durchen_layer(collated_text, default_pub)

@@ -1,7 +1,11 @@
 from pathlib import Path
+import re
+import logging
 
 from pedurma.preview import get_reconstructed_text
 
+
+logging.basicConfig(filename="./data/batch_note_text.log", level=logging.INFO, filemode="w" )
 
 def get_collated_text(text_id):
     try:
@@ -16,6 +20,11 @@ def clean_collated_text(collated_text_path):
     collated_text = collated_text.replace("། ་", "་")
     collated_text_path.write_text(collated_text, encoding="utf-8")
 
+def has_batch_note(collated_text):
+    if re.search("\)>", collated_text):
+        return True
+    else:
+        return False
     
 
 if __name__ == "__main__":
@@ -35,4 +44,9 @@ if __name__ == "__main__":
     #     print(f'{collated_text_id} completed..')
     collated_text_paths = list(Path('./data/collated_text').iterdir())
     for collated_text_path in collated_text_paths:
-        clean_collated_text(collated_text_path)
+        text_id = collated_text_path.stem[:-5]
+        collated_text = collated_text_path.read_text(encoding='utf-8')
+        if has_batch_note(collated_text):
+            logging.info(f"{text_id} has batch note")
+
+        # clean_collated_text(collated_text_path)

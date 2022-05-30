@@ -60,19 +60,22 @@ def pipeline(collated_text_path, pedurma_outline):
     normalized_note_text = get_normalized_text(clean_text_with_pedurma_notes)
     Path(f'./data/normalized_collated_text/{text_fn}.txt').write_text(normalized_note_text, encoding='utf-8')
     print("INFO: Note payload readiablity improved.")
-    text_opf = create_open_opf(text_id, normalized_note_text, OPF_PATH)
-    logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
-    print("INFO: OPF created")
+    # text_opf = create_open_opf(text_id, normalized_note_text, OPF_PATH)
+    # logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
+    # print("INFO: OPF created")
     # text_opf.publish()
     # print("INFO: Pecha published.")
 
 if __name__ == "__main__":
-    normalized_collated_text_paths = list(Path('./data/collated_text').iterdir())
-    normalized_collated_text_paths.sort()
-    normalized_collated_text_paths = [Path('./data/collated_text/D4274_v108.txt'),] #Path('./data/collated_text/D3871_v061.txt')]
+    ludup_text = Path('./data/ludup_text_list.txt').read_text(encoding='utf-8').splitlines()
+    collated_text_paths = list(Path('./data/collated_text').iterdir())
+    collated_text_paths.sort()
+    # collated_text_paths = [Path('./data/collated_text/D4274_v108.txt'), Path('./data/collated_text/D3871_v061.txt')]
     pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
-    for normalized_collated_text_path in normalized_collated_text_paths:
-        pipeline(normalized_collated_text_path, pedurma_outline)
+    for collated_text_path in collated_text_paths:
+        text_id = collated_text_path.stem[:-5]
+        if text_id in ludup_text:
+            pipeline(collated_text_path, pedurma_outline)
 
 
 
