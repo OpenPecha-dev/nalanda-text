@@ -67,7 +67,7 @@ def pipeline(collated_text_path, pedurma_outline):
     # print("INFO: Pecha published.")
 
 if __name__ == "__main__":
-    ludup_text = Path('./data/ludup_text_list.txt').read_text(encoding='utf-8').splitlines()
+    ludup_text = Path('./data/shanti_deva_text_list.txt').read_text(encoding='utf-8').splitlines()
     collated_text_paths = list(Path('./data/collated_text').iterdir())
     collated_text_paths.sort()
     # collated_text_paths = [Path('./data/collated_text/D4274_v108.txt'), Path('./data/collated_text/D3871_v061.txt')]
