@@ -264,6 +264,8 @@ def resolve_mono_part(collated_text,prev_end,note):
         option_start,option_end = note_option["span"]
         tokens = get_tokens(note_option["note"])
         token_pos = get_token_pos(note_option["note"])
+        if token_pos != "PART":
+            token_pos = get_token_pos(note["default_option"])
         if len(tokens) != 1 or token_pos != "PART":
             return
         new_note = new_note[:option_start-note_start]+left_context_valid_word[0]+note_option["note"]+new_note[option_end-note_start:]
