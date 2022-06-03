@@ -51,11 +51,11 @@ def get_combined_text(hfmls):
 def transfer_pedurma_notes(pedurma_text, derge_text):
     derge_text_with_notes = ''
     derge_text = re.sub("〔.+?〕", "", derge_text)
-    derge_text = derge_text.replace("\n", "")
+    # derge_text = derge_text.replace("\n", "")
     if derge_text[-1] == "༄":
         derge_text = derge_text[:-1]
-    patterns = [["pedurma_notes", r"(\(\d+\) <.*?>)"], ["double_tseg", "(:)"]]
-    pedurma_text = pedurma_text.replace("\n" ,"")
+    patterns = [["pedurma_notes", r"(\(\d+\) <.*?>)"]]
+    # pedurma_text = pedurma_text.replace("\n" ,"")
     derge_text_with_notes = transfer(pedurma_text, patterns, derge_text, output="txt")
     return derge_text_with_notes
 
@@ -87,26 +87,27 @@ def get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text,
 
 
 if __name__ == "__main__":
-    # pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
-    # text_paths = list(Path('./data/collated_text').iterdir())
-    # text_paths.sort()
-    # for text_path in text_paths:
-    #     text_fn = text_path.stem
-    #     text_id = text_path.stem[:-5]
-    #     try:
-    #         derge_text = Path(f'./data/derge_res/hfmls/{text_id}.txt').read_text(encoding='utf-8')
-    #     except:
-    #         derge_text = ""
-    #     if derge_text:
-    #         pedurma_text = text_path.read_text(encoding='utf-8')
-    #         derge_with_notes = get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text, text_id)
-    #         Path(f'./data/clean_base_collated_text/{text_fn}.txt').write_text(derge_with_notes, encoding='utf-8')
-    src = Path('./data/opfs/collated_opfs/PD01B8805/PD01B8805.opf/base/00001.txt').read_text(encoding='utf-8')
-    trg = Path('./data/opfs/derge_opfs/PD01B8804/PD01B8804.opf/base/00001.txt').read_text(encoding='utf-8')
-    trg = trg.replace("\n", "")
-    annotations = [["linebreak", "(\n)"]]
-    new_trg = transfer(src, annotations, trg)
-    Path('./base.txt').write_text(new_trg, encoding='utf-8')
+    pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
+    text_paths = list(Path('./data/collated_text').iterdir())
+    text_paths = [Path('./data/collated_text/D3940_v064.txt')]
+    text_paths.sort()
+    for text_path in text_paths:
+        text_fn = text_path.stem
+        text_id = text_path.stem[:-5]
+        try:
+            derge_text = Path(f'./data/derge_res/hfmls/{text_id}.txt').read_text(encoding='utf-8')
+        except:
+            derge_text = ""
+        if derge_text:
+            pedurma_text = text_path.read_text(encoding='utf-8')
+            derge_with_notes = get_derge_text_with_pedurma_notes(pedurma_outline, pedurma_text, derge_text, text_id)
+            Path(f'./data/clean_base_collated_text/{text_fn}.txt').write_text(derge_with_notes, encoding='utf-8')
+    # src = Path('./data/opfs/collated_opfs/PD01B8805/PD01B8805.opf/base/00001.txt').read_text(encoding='utf-8')
+    # trg = Path('./data/opfs/derge_opfs/PD01B8804/PD01B8804.opf/base/00001.txt').read_text(encoding='utf-8')
+    # trg = trg.replace("\n", "")
+    # annotations = [["linebreak", "(\n)"]]
+    # new_trg = transfer(src, annotations, trg)
+    # Path('./base.txt').write_text(new_trg, encoding='utf-8')
 
 
     

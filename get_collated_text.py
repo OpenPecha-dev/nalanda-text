@@ -3,6 +3,7 @@ import re
 import logging
 
 from pedurma.preview import get_reconstructed_text
+from pedurma.reconstruction import get_normalized_notes_text
 
 
 logging.basicConfig(filename="./data/batch_note_text.log", level=logging.INFO, filemode="w" )
@@ -28,23 +29,26 @@ def has_batch_note(collated_text):
     
 
 if __name__ == "__main__":
-    collated_text = Path('./data/shanti_deva_text_list.txt').read_text(encoding='utf-8')
+    collated_text = Path('./data/ludup_text_list.txt').read_text(encoding='utf-8')
     collated_text_list = list(Path('./data/collated_text').iterdir())
-    collated_text_list.sort()
-    collated_text_list = [text_id.stem[:-5] for text_id in collated_text_list]
+    # collated_text_list.sort()
+    # collated_text_list = [text_id.stem[:-5] for text_id in collated_text_list]
     collated_text_ids = collated_text.splitlines()
-    collated_text_ids = ["D4383"]
-    for collated_text_id in collated_text_ids:
-        # if "D" in collated_text_id or "N" in collated_text_id:
-        #     continue
-        # if collated_text_id in collated_text_list:
-        #     continue
-        collated_text = get_collated_text(collated_text_id)
-        while not collated_text:
-            collated_text = get_collated_text(collated_text_id)
-        for vol_id, text in collated_text.items():
-            Path(f'./data/collated_text/{collated_text_id}_{vol_id}.txt').write_text(text, encoding='utf-8')
-        print(f'{collated_text_id} completed..')
+    collated_text_ids = list(set(collated_text_ids))
+    collated_text_ids.sort()
+    for collated_text_path in collated_text_list:
+        text_id = collated_text_path.stem[:-5]
+        if text_id in collated_text_ids:
+            collated_text = collated_text_path.read_text(encoding='utf-8')
+            new_collated_text = get_normalized_notes_text(collated_text)
+            Path(f'./data/ludup_text/collated_text/{collated_text_path.stem}.txt').write_text(new_collated_text, encoding='utf-8')
+            print(text_id)
+    #     collated_text = get_collated_text(collated_text_id)
+    #     while not collated_text:
+    #         collated_text = get_collated_text(collated_text_id)
+    #     for vol_id, text in collated_text.items():
+    #         Path(f'./data/ludup_text/collated_text/{collated_text_id}_{vol_id}.txt').write_text(text, encoding='utf-8')
+    #     print(f'{collated_text_id} completed..')
     # collated_text_paths = list(Path('./data/collated_text').iterdir())
     # for collated_text_path in collated_text_paths:
     #     text_id = collated_text_path.stem[:-5]

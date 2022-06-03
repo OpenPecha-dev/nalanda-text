@@ -290,9 +290,16 @@ def is_doubtful_note(note):
     else:
         return False
 
+def is_all_option_same(note):
+    note_options = note['note_options']
+    note_texts = note_options.values()
+    distinct_notes = set(note_texts)
+    if len(distinct_notes) ==1:
+        return True
+    return False
 
 def skip_notes(cur_note):
-    if is_doubtful_note(cur_note['real_note']) or is_punct_note(cur_note["real_note"]):
+    if is_doubtful_note(cur_note['real_note']) or is_punct_note(cur_note["real_note"]) or is_all_option_same(cur_note):
         return True
     return False
 
@@ -357,7 +364,9 @@ def get_normalized_text(collated_text):
 
 if __name__ == "__main__": 
     # paths = Path("./clean_base_collated_text").iterdir()
-    collated_text = Path("./data/clean_base_collated_text/Q5814_v114.txt").read_text(encoding="utf-8")
+    collated_text = Path("./data/clean_base_collated_text/D3871_v061.txt").read_text(encoding="utf-8")
+    collated_text = collated_text.replace("\n" , "")
+    collated_text = "ལས་ཀྱིས་བསྒྲུབ་པ་(89) <«པེ་»«སྣར་»པར་>མ་བྱས་ན། །སེམས་ཅན་དེ་དག་ཀུན་བསླུས་པས།"
     normalized_collated_text = get_normalized_text(collated_text)
     Path("./gen_test.txt").write_text(normalized_collated_text)
                 

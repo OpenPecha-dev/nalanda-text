@@ -13,8 +13,9 @@ from openpecha.core.pecha import OpenPechaFS
 from openpecha.utils import dump_yaml, load_yaml
 
 from opf_serializer import get_base_names, opf_to_txt
+from transfer_pedurma_notes import transfer_pedurma_notes
 
-logging.basicConfig(filename="./data/transfer_issue_text.log", level=logging.INFO, filemode="w" )
+logging.basicConfig(filename="./data/transfer_issue_text.log", level=logging.INFO,)
 
 def find_title(hfml):
     title = ""
@@ -95,10 +96,12 @@ def get_derge_text_with_notes(text_id, collated_text, pedurma_outline):
         transfer_durchen_layer(collated_opf_path, derge_opf_path, collated_base_name, derge_base_name)
         derge_durchen_layer = derge_opf.read_layers_file(derge_base_name, "Durchen")
         if has_transfer_issue(derge_durchen_layer, text_id):
-            logging.info(f"{text_id} transfer issue")
-            return collated_text
+            logging.info(f"{text_id} transfer issue {derge_opf.pecha_id}")
+            derge_text_with_notes = transfer_pedurma_notes(collated_text, derge_text_with_pedurma_line_break)
+            return derge_text_with_notes
+            # return collated_text
     derge_text_with_notes = opf_to_txt(derge_opf_path)
-    shutil.rmtree(str(collated_opf_path.parent))
+    # shutil.rmtree(str(collated_opf_path.parent))
     # shutil.rmtree(str(derge_opf_path.parent))
     return derge_text_with_notes
 

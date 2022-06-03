@@ -4,6 +4,7 @@ from pathlib import Path
 
 def reformat_batch_note(note_text):
     reformated_note_text = note_text
+    note_text = note_text.replace("（", "(")
     batch_note_info = re.search("\(.+\)", note_text)[0]
     reformated_batch_note_info = batch_note_info
     reformated_batch_note_info = reformated_batch_note_info.replace("«", "༺")
@@ -29,13 +30,20 @@ def reformat_batch_notes(collated_text):
     
     return reformated_collated_text
 
+def has_batch_note(collated_text):
+    if re.search("\)>", collated_text):
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
-    batch_note_text_ids = Path('./data/shanti_deva_text_list.txt').read_text(encoding='utf-8').splitlines()
-    collated_text_paths = list(Path('./data/collated_text').iterdir())
+    batch_note_text_ids = Path('./data/batch_note_text.txt').read_text(encoding='utf-8').splitlines()
+    # batch_note_text_ids = ['D3930']
+    collated_text_paths = list(Path('./data/ludup_text/collated_text').iterdir())
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]
-        if text_id in batch_note_text_ids:
-            collated_text = collated_text_path.read_text(encoding='utf-8')
+        collated_text = collated_text_path.read_text(encoding='utf-8')
+        if has_batch_note(collated_text):
             reformated_collated_text = reformat_batch_notes(collated_text)
             collated_text_path.write_text(reformated_collated_text, encoding='utf-8')
+            print(f"{text_id} process")

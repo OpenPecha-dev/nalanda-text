@@ -1,0 +1,30 @@
+id: df312b839bbd4d63a27edc2ac12f02fd
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  86f71d7c817a4ffa8a689bcdcbf0afdf:
+    id: 86f71d7c817a4ffa8a689bcdcbf0afdf
+    span:
+      start: 500
+      end: 506
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: པདྨའི་
+        probability: null
+        features: null
+      narthang:
+        note: པདྨ་
+        probability: null
+        features: null
+      derge:
+        note: པདྨའི་
+        probability: null
+        features: null
+      chone:
+        note: པདྨའི་
+        probability: null
+        features: null
+    printable: true
