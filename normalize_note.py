@@ -80,9 +80,15 @@ def resolve_full_word_addition(collated_text,prev_end,note):
                 tup = get_left_context_valid_word(note,note_option,left_syll[-1])
                 if tup:
                     word,char_walker = tup
-                    option_start,option_end = get_option_span(note,note_option)
-                    new_note = new_note[:option_start-note_start]+word+note_option.replace("+","")+new_note[option_end-note_start:]
                     index_set.add(char_walker)
+                else:
+                    word = left_syll[-1]
+                    index_set.add(0)
+
+                option_start,option_end = get_option_span(note,note_option)
+                new_note = new_note[:option_start-note_start]+word+note_option.replace("+","")+new_note[option_end-note_start:]    
+
+                        
                     
         if new_note != collated_text[note_start:note_end] and len(list(index_set)) == 1:
             new_default_word = word
@@ -368,7 +374,7 @@ if __name__ == "__main__":
     # paths = Path("./clean_base_collated_text").iterdir()
     collated_text = Path("./data/shanti_deva_text/clean_base_collated_text/Q5814_v114.txt").read_text(encoding="utf-8")
     collated_text = collated_text.replace("\n" , "")
-    # collated_text = "ལས་ཀྱིས་བསྒྲུབ་པ་(89) <«པེ་»«སྣར་»པར་>མ་བྱས་ན། །སེམས་ཅན་དེ་དག་ཀུན་བསླུས་པས།"
+    collated_text = Path("./test.txt").read_text(encoding="utf-8")
     normalized_collated_text = get_normalized_text(collated_text)
     Path("./gen_test.txt").write_text(normalized_collated_text)
                 
