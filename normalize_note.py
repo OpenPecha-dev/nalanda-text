@@ -366,9 +366,9 @@ def get_normalized_text(collated_text):
 
 if __name__ == "__main__": 
     # paths = Path("./clean_base_collated_text").iterdir()
-    collated_text = Path("./data/clean_base_collated_text/D3871_v061.txt").read_text(encoding="utf-8")
+    collated_text = Path("./data/shanti_deva_text/clean_base_collated_text/Q5814_v114.txt").read_text(encoding="utf-8")
     collated_text = collated_text.replace("\n" , "")
-    collated_text = "ལས་ཀྱིས་བསྒྲུབ་པ་(89) <«པེ་»«སྣར་»པར་>མ་བྱས་ན། །སེམས་ཅན་དེ་དག་ཀུན་བསླུས་པས།"
+    # collated_text = "ལས་ཀྱིས་བསྒྲུབ་པ་(89) <«པེ་»«སྣར་»པར་>མ་བྱས་ན། །སེམས་ཅན་དེ་དག་ཀུན་བསླུས་པས།"
     normalized_collated_text = get_normalized_text(collated_text)
     Path("./gen_test.txt").write_text(normalized_collated_text)
                 

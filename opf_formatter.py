@@ -67,6 +67,7 @@ def get_note_text_options(default_option, note_chunk):
             else:
                 note_text_options[pub_mapping[pub]] = notes[walker+2].replace('>', '')
     for pub, note in note_text_options.items():
+        note = note.replace("+", "")
         if "-" in note:
             note_text_options[pub] = ""
         if not note:
@@ -103,20 +104,24 @@ def get_syls(text):
     return syls
 
 
-def get_default_option(prev_chunk):
+def get_default_option(prev_chunk, note_chunk):
     default_option = ''
+    if "+" in note_chunk:
+        return default_option
     if ':' in prev_chunk:
         default_option = re.search(':.*', prev_chunk)[0]
     else:
         syls = get_syls(prev_chunk)
         if syls:
             default_option = syls[-1]
-    default_option = default_option.replace("#", "")
+            if default_option == "#":
+                default_option = syls[-2]
+    default_option = default_option.replace("#", "\n")
     return default_option
 
 
 def get_durchen_annotation(prev_chunk, note_chunk, char_walker, default_pub):
-    default_option = get_default_option(prev_chunk)
+    default_option = get_default_option(prev_chunk, note_chunk)
     ann_start = char_walker - len(default_option)
     ann_end = char_walker
     note_text_options = get_note_text_options(default_option, note_chunk)

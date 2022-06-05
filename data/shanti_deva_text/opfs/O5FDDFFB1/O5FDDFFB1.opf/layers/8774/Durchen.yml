@@ -1,0 +1,134 @@
+id: 6172b93c018a42d093dccf7c3fa87d77
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  d9439681049c4269817e0ea7720732d9:
+    id: d9439681049c4269817e0ea7720732d9
+    span:
+      start: 2485
+      end: 2488
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཕག་
+        probability: null
+        features: null
+      narthang:
+        note: ཕག་
+        probability: null
+        features: null
+      derge:
+        note: ཕག་
+        probability: null
+        features: null
+      chone:
+        note: ཕག་
+        probability: null
+        features: null
+    printable: true
+  8823557a5df645c89b61ff512e32fbe7:
+    id: 8823557a5df645c89b61ff512e32fbe7
+    span:
+      start: 3123
+      end: 3127
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཤགས་
+        probability: null
+        features: null
+      narthang:
+        note: བཤག་
+        probability: null
+        features: null
+      derge:
+        note: བཤག་
+        probability: null
+        features: null
+      chone:
+        note: བཤག་
+        probability: null
+        features: null
+    printable: true
+  2197a2e758324daea0c13b757b04cb59:
+    id: 2197a2e758324daea0c13b757b04cb59
+    span:
+      start: 3237
+      end: 3246
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཁོང་གི་
+        probability: null
+        features: null
+      narthang:
+        note: ཁོར་གྱི་
+        probability: null
+        features: null
+      derge:
+        note: ཁོར་གྱི་
+        probability: null
+        features: null
+      chone:
+        note: ཁོར་གྱི་
+        probability: null
+        features: null
+    printable: true
+  4ee7d61024eb49b2b620863feb000e64:
+    id: 4ee7d61024eb49b2b620863feb000e64
+    span:
+      start: 5208
+      end: 5215
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཞུ་
+        probability: null
+        features: null
+      narthang:
+        note: ཞུ་བས་
+        probability: null
+        features: null
+      derge:
+        note: ཞུ་བས་
+        probability: null
+        features: null
+      chone:
+        note: ཞུ་བས་
+        probability: null
+        features: null
+    printable: true
+  99ce55b8e69f479e9f600d14aa3bae81:
+    id: 99ce55b8e69f479e9f600d14aa3bae81
+    span:
+      start: 6046
+      end: 6052
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཊི་ཀ་
+        probability: null
+        features: null
+      narthang:
+        note: ཊ་ཀི་
+        probability: null
+        features: null
+      derge:
+        note: ཊ་ཀི་
+        probability: null
+        features: null
+      chone:
+        note: ཊ་ཀི་
+        probability: null
+        features: null
+    printable: true

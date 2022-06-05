@@ -39,7 +39,7 @@ def has_batch_note(collated_text):
 if __name__ == "__main__":
     batch_note_text_ids = Path('./data/batch_note_text.txt').read_text(encoding='utf-8').splitlines()
     # batch_note_text_ids = ['D3930']
-    collated_text_paths = list(Path('./data/ludup_text/collated_text').iterdir())
+    collated_text_paths = list(Path('./data/shanti_deva_text/collated_text').iterdir())
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]
         collated_text = collated_text_path.read_text(encoding='utf-8')

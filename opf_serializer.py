@@ -84,5 +84,6 @@ def opf_to_txt(opf_path):
 
 if __name__ == "__main__":
     opf_path = Path('./data/opfs/derge_opfs/OB74A874C/OB74A874C.opf')
+    opf_path = Path('./tests/data/OB5B67C66/OB5B67C66.opf')
     collated_text = opf_to_txt(opf_path)
     Path('./data/serializer_output/test.txt').write_text(collated_text, encoding='utf-8')

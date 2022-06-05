@@ -44,8 +44,8 @@ def get_text_title(pedurma_outline, text_id, hfml):
                     return f'༄༅། །{title}'
     return title
 
-def get_derge_text(pedurma_outline, text_id):
-    derge_text = Path(f'./data/derge_res/hfmls/{text_id}.txt').read_text(encoding='utf-8')
+def get_derge_text(philo, pedurma_outline, text_id):
+    derge_text = Path(f'./data/{philo}_text/derge_hfmls/{text_id}.txt').read_text(encoding='utf-8')
     derge_text = f'{get_text_title(pedurma_outline, text_id, derge_text)}\n{derge_text}'
     if derge_text[-1] == "༄":
         derge_text = derge_text[:-1]
@@ -79,10 +79,10 @@ def has_transfer_issue(derge_durchen_layer, text_id):
     
     
 
-def get_derge_text_with_notes(text_id, collated_text, pedurma_outline):
+def get_derge_text_with_notes(philo, text_id, collated_text, pedurma_outline):
     collated_opf = create_open_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))
     collated_opf_path = collated_opf.opf_path
-    derge_text = get_derge_text(pedurma_outline, text_id)
+    derge_text = get_derge_text(philo, pedurma_outline, text_id)
     derge_text_with_pedurma_line_break = get_derge_text_with_pedurma_line_break(collated_text, derge_text)
     derge_opf = create_derge_opf(text_id, derge_text_with_pedurma_line_break, opf_path=Path('./data/opfs/derge_opfs'))
     derge_opf_path = derge_opf.opf_path
