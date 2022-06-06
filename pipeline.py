@@ -23,14 +23,26 @@ def rm_text_ann(text):
         str: clean collated text without text annotation
     """
     clean_text = re.sub("\{[A-Z]\d+\}", "", text)
-    clean_text = re.sub("\d+-\d+", "", clean_text)
     return clean_text
 
+def get_pages(text):
+    pages = []
+    chunks = re.split("(\d+-\d+)", text)
+    for chunk in chunks:
+        if re.search("\d+-\d+", chunk):
+            continue
+        else:
+            pages.append(chunk)
+    return pages
 
 def reformat_collated_text(text):
-    text = text.replace("\n", "")
-    text = re.sub("\d+-\d+", "\n", text)
-    return text
+    reformated_text =""
+    pages = get_pages(text)
+    for page in pages:
+        reformated_page = page.replace("\n","")
+        if reformated_page:
+            reformated_text += f'{reformated_page}\n'
+    return reformated_text
 
 
 def pipeline(philo, collated_text_path, pedurma_outline):
