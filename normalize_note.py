@@ -367,14 +367,16 @@ def get_normalized_text(collated_text):
 
     normalized_collated_text+=collated_text[prev_end:]
     reformated_normalized_text = reformat_line_break(normalized_collated_text)
-    return reformated_normalized_text  
+    return reformated_normalized_text
+
 
 
 if __name__ == "__main__": 
-    # paths = Path("./clean_base_collated_text").iterdir()
-    collated_text = Path("./data/shanti_deva_text/clean_base_collated_text/Q5814_v114.txt").read_text(encoding="utf-8")
-    collated_text = collated_text.replace("\n" , "")
-    collated_text = Path("./test.txt").read_text(encoding="utf-8")
+    collated_text = "མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»+རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་བྱས་ན།(5) <«པེ་»«སྣར་»ནས།> །སྐུ་གསུམ་མར་གྱི་གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»འགྲིལ།«ཅོ་»དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་མ་བྱས་ན(༡) <«ཅོ་»-ན>།"
+    expected_output = "མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»ཕྱིར་རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་:བྱས་ན།(5) <«པེ་»«སྣར་»བྱས་ནས།> །སྐུ་གསུམ་མར་གྱི་:གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»གོང་བུ་འགྲིལ།«ཅོ་»གོང་བུ་དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་:མ་བྱས་ན།(༡) <«ཅོ་»མ་བྱས།>"
     normalized_collated_text = get_normalized_text(collated_text)
-    Path("./gen_test.txt").write_text(normalized_collated_text)
+    if normalized_collated_text == expected_output:
+        print('test pass')
+    else:
+        print('test fail')
                 
