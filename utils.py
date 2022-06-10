@@ -9,11 +9,11 @@ wt = WordTokenizer()
 def reformat_line_break(text):
     reformated_text = ''
     text = text.replace("\n", "")
-    chunks = re.split('(\(\d+\) <.+?>)', text)
+    chunks = re.split('(། །)', text)
     walker = 1
     for chunk in chunks:
-        if re.search('\(\d+\) <.+?>', chunk):
-            if walker == 30:
+        if re.search('། །', chunk):
+            if walker == 50:
                 reformated_text += f"{chunk}\n"
                 walker = 0
             else:

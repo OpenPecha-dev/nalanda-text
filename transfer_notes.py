@@ -99,10 +99,9 @@ def get_derge_text_with_notes(philo, text_id, collated_text, pedurma_outline):
             logging.info(f"{text_id} transfer issue {derge_opf.pecha_id}")
             derge_text_with_notes = transfer_pedurma_notes(collated_text, derge_text_with_pedurma_line_break)
             return derge_text_with_notes
-            # return collated_text
     derge_text_with_notes = opf_to_txt(derge_opf_path)
-    # shutil.rmtree(str(collated_opf_path.parent))
-    # shutil.rmtree(str(derge_opf_path.parent))
+    shutil.rmtree(str(collated_opf_path.parent))
+    shutil.rmtree(str(derge_opf_path.parent))
     return derge_text_with_notes
 
 
@@ -113,8 +112,7 @@ def transfer_durchen_layer(src_opf, trg_opf, src_base_name, trg_base_name):
 
 if __name__ == "__main__":
     pedurma_outline = load_yaml(Path('./data/pedurma_outline.yml'))
-    collated_text = Path('./data/collated_text/D4274_v108.txt').read_text(encoding='utf-8')
-    text_id = "D4274"
-    texts = get_derge_text_with_notes(text_id, collated_text, pedurma_outline)
-    for base_name, text in texts.items():
-        Path(f"./data/serializer_output/{base_name}.txt").write_text(text, encoding='utf-8')
+    collated_text = Path('./data/shanti_deva_text/collated_text/D3940_v064.txt').read_text(encoding='utf-8')
+    text_id = "D3940"
+    philo = "shanti_deva"
+    texts = get_derge_text_with_notes(philo, text_id, collated_text, pedurma_outline)

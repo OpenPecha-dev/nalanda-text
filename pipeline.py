@@ -75,7 +75,7 @@ if __name__ == "__main__":
     collated_text_paths = list(Path(f'./data/{philo}_text/collated_text').iterdir())
     collated_text_paths.sort()
     #collated_text_paths = [Path('./data/collated_text/D1784_v015.txt'), ]#Path('./data/collated_text/D3871_v061.txt')]
-    collated_text_paths = [Path('./data/shanti_deva_text/collated_text/D3871_v061.txt')]
+    # collated_text_paths = [Path('./data/shanti_deva_text/collated_text/D3871_v061.txt')]
     pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]
