@@ -372,24 +372,12 @@ def get_normalized_text(collated_text):
     notes_iter = iter(enumerate(notes,0)) 
     for note_iter in notes_iter:
         index,cur_note = note_iter
-        _,end = cur_note["span"]
         if index <len(notes)-1:
                 next_note = notes[index+1]
                 normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
         else:
             normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
         normalized_collated_text+=normalized_chunk
-        """ try:
-            if index <len(notes)-1:
-                next_note = notes[index+1]
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
-            else:
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
-            normalized_collated_text+=normalized_chunk
-        except:
-            normalized_collated_text+=collated_text[prev_end:end]
-            prev_end = end    """
-
     normalized_collated_text+=collated_text[prev_end:]
     reformated_normalized_text = reformat_line_break(normalized_collated_text)
     return reformated_normalized_text
