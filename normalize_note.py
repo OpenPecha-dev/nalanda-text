@@ -236,7 +236,11 @@ def side_note_valid_word(note):
             left_word = sum_up_syll(left_syls[i+1:],"left")
             right_word = sum_up_syll(right_syls[:j+1],"right")
             word =left_word + right_word
-            if is_word(word):
+            if left_word == "།":
+                return "",right_word
+            elif right_word == "།":
+                return left_word,""
+            elif is_word(word):
                 return left_word,right_word
     return
 
@@ -393,7 +397,7 @@ def get_normalized_text(collated_text):
 
 
 if __name__ == "__main__": 
-    collated_text = " མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»+རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་བྱས་ན།(5) <«པེ་»«སྣར་»ནས།> །སྐུ་གསུམ་མར་གྱི་གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»འགྲིལ།«ཅོ་»དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་མ་བྱས་ན(༡) <«ཅོ་»-ན>། "
+    collated_text = "བདག་གིས་དགེ་གོམས་མ་བྱས་ན།(༡) <«ཅོ་»-ན།>"
     expected_output = "མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»ཕྱིར་རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་:བྱས་ན།(5) <«པེ་»«སྣར་»བྱས་ནས།> །སྐུ་གསུམ་མར་གྱི་:གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»གོང་བུ་འགྲིལ།«ཅོ་»གོང་བུ་དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་:མ་བྱས་ན།(༡) <«ཅོ་»མ་བྱས།>"
     normalized_collated_text = get_normalized_text(collated_text)
     print(normalized_collated_text)
