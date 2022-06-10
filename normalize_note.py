@@ -8,6 +8,19 @@ logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
 
+def normalize_shad(word):
+    without_last = word[:-1]
+    if "་།" in  without_last:
+        without_last =without_last.replace("་།","་")
+
+    if "།" in without_last:
+        without_last =without_last.replace("།","་")    
+
+    normalized = without_last+word[-1]
+
+    return normalized
+
+
 def resolve_ms_with(collated_text,prev_end,note):
     note_start,note_end = note["span"]  
     if "+" in note["real_note"] or "-" in note["real_note"]:
@@ -83,6 +96,11 @@ def resolve_full_word_addition(collated_text,prev_end,note):
                     index_set.add(char_walker)
                 else:
                     word = left_syll[-1]
+                    if "་།" in  word:
+                        word =word.replace("་།","་")
+
+                    if "།" in word:
+                        word =word.replace("།","་")
                     index_set.add(0)
 
                 option_start,option_end = get_option_span(note,note_option)
@@ -114,9 +132,9 @@ def resolve_omission_with_sub(collated_text,prev_end,note):
         if not tup:
             x=1 if collated_text[note_start-len(note["default_option"])-1] == ":" else 0
             new_option = form_word(note)
+            if not new_option:
+                return 
             new_default_word = new_option+note["default_option"]
-            if not new_default_word:
-                return         
             new_left_context = collated_text[prev_end:note_start-len(new_default_word)-x]
             normalized_chunk = new_left_context+":"+new_default_word+collated_text[note_start:pyld_start]+new_option.strip()+">"
             return normalized_chunk,note_end
@@ -218,7 +236,11 @@ def side_note_valid_word(note):
             left_word = sum_up_syll(left_syls[i+1:],"left")
             right_word = sum_up_syll(right_syls[:j+1],"right")
             word =left_word + right_word
-            if is_word(word):
+            if left_word == "།":
+                return "",right_word
+            elif right_word == "།":
+                return left_word,""
+            elif is_word(word):
                 return left_word,right_word
     return
 
@@ -233,8 +255,11 @@ def get_left_context_valid_word(note,note_option,word=None):
         word=left_syls[char_walker]+word
         if is_word(word):
             if left_syls[char_walker][-1].strip() in ("།"):
-                return word[1:],char_walker
-            return word,char_walker
+                ret_word = normalize_shad(word[1:])
+                return ret_word,char_walker
+            else:
+                ret_word = normalize_shad(word)
+                return ret_word,char_walker
         char_walker-=1
     return
 
@@ -243,7 +268,7 @@ def get_right_context_valid_word(note,note_option,word=None):
     if word == None:
         word = note_option.replace("།","་")
     right_syls = get_syls(note["right_context"])
-    if len(right_syls) == 0 or right_syls[0][0].strip() == "།":
+    if len(right_syls) == 0 or right_syls[0][0] in("།"," "):
         return
     while char_walker < len(right_syls) and char_walker<3:
         word = word+right_syls[char_walker]          
@@ -268,7 +293,7 @@ def resolve_mono_part(collated_text,prev_end,note):
 
     for note_option in note_options:
         option_start,option_end = note_option["span"]
-        tokens = get_tokens(note_option["note"])
+        tokens = get_tokens(note_option["note"].replace("།",""))
         token_pos = get_token_pos(note_option["note"])
         if token_pos != "PART":
             token_pos = get_token_pos(note["default_option"])
@@ -347,24 +372,12 @@ def get_normalized_text(collated_text):
     notes_iter = iter(enumerate(notes,0)) 
     for note_iter in notes_iter:
         index,cur_note = note_iter
-        _,end = cur_note["span"]
         if index <len(notes)-1:
                 next_note = notes[index+1]
                 normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
         else:
             normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
         normalized_collated_text+=normalized_chunk
-        """ try:
-            if index <len(notes)-1:
-                next_note = notes[index+1]
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note,next_note,notes_iter)     
-            else:
-                normalized_chunk,prev_end = normalize_note(collated_text,prev_end,cur_note)  
-            normalized_collated_text+=normalized_chunk
-        except:
-            normalized_collated_text+=collated_text[prev_end:end]
-            prev_end = end    """
-
     normalized_collated_text+=collated_text[prev_end:]
     reformated_normalized_text = reformat_line_break(normalized_collated_text)
     return reformated_normalized_text
@@ -372,9 +385,10 @@ def get_normalized_text(collated_text):
 
 
 if __name__ == "__main__": 
-    collated_text = "མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»+རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་བྱས་ན།(5) <«པེ་»«སྣར་»ནས།> །སྐུ་གསུམ་མར་གྱི་གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»འགྲིལ།«ཅོ་»དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་མ་བྱས་ན(༡) <«ཅོ་»-ན>།"
+    collated_text = "བདག་གིས་དགེ་གོམས་མ་བྱས་ན།(༡) <«ཅོ་»-ན།>"
     expected_output = "མཇུག་ཀྱང་རྒྱས་པར་བྱ་བའི་ཕྱིར།(༢) <«པེ་»ཕྱིར་རོ།> དད་བརྩོན་ཤེ་མས་རྩོལ་:བྱས་ན།(5) <«པེ་»«སྣར་»བྱས་ནས།> །སྐུ་གསུམ་མར་གྱི་:གོང་བུ་འདྲིལ།(6) <«པེ་»«སྣར་»གོང་བུ་འགྲིལ།«ཅོ་»གོང་བུ་དྲིལ།> །གསུང་ངོ་།། བདག་གིས་དགེ་གོམས་:མ་བྱས་ན།(༡) <«ཅོ་»མ་བྱས།>"
     normalized_collated_text = get_normalized_text(collated_text)
+    print(normalized_collated_text)
     if normalized_collated_text == expected_output:
         print('test pass')
     else:
