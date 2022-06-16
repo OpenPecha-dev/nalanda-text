@@ -54,15 +54,15 @@ def pipeline(philo, collated_text_path, pedurma_outline):
         clean_text_with_pedurma_notes = get_derge_text_with_notes(philo, text_id, collated_text, pedurma_outline,)
     else:
         clean_text_with_pedurma_notes = rm_text_ann(collated_text)
-    Path(f'./data/{philo}_text/clean_base_collated_text/{text_fn}.txt').write_text(clean_text_with_pedurma_notes, encoding='utf-8')
+    Path(f'./data/nalanda_works/{philo}/clean_base_collated_text/{text_fn}.txt').write_text(clean_text_with_pedurma_notes, encoding='utf-8')
     
     print("INFO: Pedurma notes are transfer to clean base text.")
     # clean_text_with_pedurma_notes = Path(f'./data/{philo}_text/clean_base_collated_text/{text_fn}.txt').read_text(encoding='utf-8')
     clean_text_with_pedurma_notes = clean_text_with_pedurma_notes.replace("\n", "")
     normalized_note_text = get_normalized_text(clean_text_with_pedurma_notes)
-    Path(f'./data/{philo}_text/normalized_collated_text/{text_fn}.txt').write_text(normalized_note_text, encoding='utf-8')
+    Path(f'./data/nalanda_works/{philo}/normalized_collated_text/{text_fn}.txt').write_text(normalized_note_text, encoding='utf-8')
     print("INFO: Note payload readiablity improved.")
-    opf_path = Path(f'./data/{philo}_text/opfs')
+    opf_path = Path(f'./data/nalanda_works/{philo}/opfs')
     text_opf = create_open_opf(text_id, normalized_note_text, opf_path)
     logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
     print("INFO: OPF created")
@@ -70,12 +70,10 @@ def pipeline(philo, collated_text_path, pedurma_outline):
     # print("INFO: Pecha published.")
 
 if __name__ == "__main__":
-    philo = "shanti_deva"
-    philo_text = Path(f'./data/{philo}_text/{philo}_text_list.txt').read_text(encoding='utf-8').splitlines()
-    collated_text_paths = list(Path(f'./data/{philo}_text/collated_text').iterdir())
+    philo = "03-Buddhapalita"
+    philo_text = Path(f'./data/nalanda_works/{philo}/{philo}_text_list.txt').read_text(encoding='utf-8').splitlines()
+    collated_text_paths = list(Path(f'./data/nalanda_works/{philo}/collated_text').iterdir())
     collated_text_paths.sort()
-    #collated_text_paths = [Path('./data/collated_text/D1784_v015.txt'), ]#Path('./data/collated_text/D3871_v061.txt')]
-    # collated_text_paths = [Path('./data/shanti_deva_text/collated_text/D3871_v061.txt')]
     pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]

@@ -45,7 +45,7 @@ def get_text_title(pedurma_outline, text_id, hfml):
     return title
 
 def get_derge_text(philo, pedurma_outline, text_id):
-    derge_text = Path(f'./data/{philo}_text/derge_hfmls/{text_id}.txt').read_text(encoding='utf-8')
+    derge_text = Path(f'./data/nalanda_works/{philo}/derge_hfmls/{text_id}.txt').read_text(encoding='utf-8')
     derge_text = f'{get_text_title(pedurma_outline, text_id, derge_text)}\n{derge_text}'
     if derge_text[-1] == "༄":
         derge_text = derge_text[:-1]
