@@ -34,7 +34,6 @@ def normalized_note_text_space(note_text_options, default_option):
 
 
 def get_note_text_options(default_option, note_chunk):
-    default_option = default_option.replace(":", "")
     note_chunk = re.sub('\(\d+\)', '', note_chunk)
     if "+" in note_chunk:
         default_option = ""
@@ -117,6 +116,7 @@ def get_default_option(prev_chunk, note_chunk):
             if default_option == "#":
                 default_option = syls[-2]
     default_option = default_option.replace("#", "\n")
+    default_option = default_option.replace(":" , "")
     return default_option
 
 
@@ -178,5 +178,5 @@ def create_open_opf(text_id, collated_text, opf_path):
 
 if __name__ == "__main__":
     text_id = "D3871"
-    collated_text = Path('./data/collated_text/D4274_v108.txt').read_text(encoding='utf-8')
+    collated_text = Path('./data/nalanda_works/06-Shantideva/normalized_collated_text/D3871_v061.txt').read_text(encoding='utf-8')
     create_open_opf(text_id, collated_text, opf_path=Path('./data/opfs/collated_opfs'))
