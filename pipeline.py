@@ -70,14 +70,14 @@ def pipeline(philo, collated_text_path, pedurma_outline):
     # print("INFO: Pecha published.")
 
 if __name__ == "__main__":
-    philo = "02-Aryadeva"
+    philo = "05-Chandrakirti"
     philo_text = Path(f'./data/nalanda_works/{philo}/{philo}_text_list.txt').read_text(encoding='utf-8').splitlines()
     collated_text_paths = list(Path(f'./data/nalanda_works/{philo}/collated_text').iterdir())
     collated_text_paths.sort()
     pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]
-        if text_id in philo_text:
+        if text_id == "Q5261" and text_id in philo_text:
             pipeline(philo, collated_text_path, pedurma_outline)
 
 
