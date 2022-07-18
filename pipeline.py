@@ -62,26 +62,20 @@ def pipeline(philo, collated_text_path, pedurma_outline):
     normalized_note_text = get_normalized_text(clean_text_with_pedurma_notes)
     Path(f'./data/nalanda_works/{philo}/normalized_collated_text/{text_fn}.txt').write_text(normalized_note_text, encoding='utf-8')
     print("INFO: Note payload readiablity improved.")
-    # opf_path = Path(f'./data/nalanda_works/{philo}/opfs')
-    # text_opf = create_open_opf(text_id, normalized_note_text, opf_path)
+    opf_path = Path(f'./data/nalanda_works/{philo}/opfs')
+    text_opf = create_open_opf(text_id, normalized_note_text, opf_path)
     # logging.info(f"{text_id} completed with opf {text_opf.pecha_id}")
     # print("INFO: OPF created")
     # text_opf.publish()
     # print("INFO: Pecha published.")
 
 if __name__ == "__main__":
-    philo = "05-Chandrakirti"
+    philo = "other"
     philo_text = Path(f'./data/nalanda_works/{philo}/{philo}_text_list.txt').read_text(encoding='utf-8').splitlines()
     collated_text_paths = list(Path(f'./data/nalanda_works/{philo}/collated_text').iterdir())
     collated_text_paths.sort()
     pedurma_outline = from_yaml(Path('./data/pedurma_outline.yml'))
     for collated_text_path in collated_text_paths:
         text_id = collated_text_path.stem[:-5]
-        if text_id == "Q5261" and text_id in philo_text:
+        if text_id in philo_text:
             pipeline(philo, collated_text_path, pedurma_outline)
-
-
-
-    
-
-

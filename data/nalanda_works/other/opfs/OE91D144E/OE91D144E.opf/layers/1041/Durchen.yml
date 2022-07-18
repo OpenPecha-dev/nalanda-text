@@ -1,0 +1,57 @@
+id: 8548401e0ee246d088b5bcd1c97aca1e
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  108f06bd4ae24b52ba473cef3e5a3933:
+    id: 108f06bd4ae24b52ba473cef3e5a3933
+    span:
+      start: 581
+      end: 588
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: འཁྱུགས་
+        probability: null
+        features: null
+      narthang:
+        note: འཁྲུགས་
+        probability: null
+        features: null
+      derge:
+        note: འཁྱུགས་
+        probability: null
+        features: null
+      chone:
+        note: འཁྱུགས་
+        probability: null
+        features: null
+    printable: true
+  083b5fdfdaf64010828dbfdbb17ea046:
+    id: 083b5fdfdaf64010828dbfdbb17ea046
+    span:
+      start: 1394
+      end: 1396
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ' །'
+        probability: null
+        features: null
+      narthang:
+        note: ' ་ཨོཾ་ཡེ་དྷརྨཱ་ཧེ་ཏུ་པྲ་བྷ་བཱ་ཧེ་ཏུན་ཏེ་ཥཱནྟ་ཐཱ་ག་ཏོ་ཧྱ་ཝ་དཏ། ཏེཥཱཉྩ་ཡོ་ནི་རོ་དྷ་ཨེ་ཝཾ་ཝ་དཱི་མ་ཧཱ་ཤྲ་མཎཿ།
+          སརྦ་'
+        probability: null
+        features: null
+      derge:
+        note: ' །'
+        probability: null
+        features: null
+      chone:
+        note: ' །'
+        probability: null
+        features: null
+    printable: true

@@ -1,0 +1,498 @@
+id: 01092d2011c64102a0eeb260a201f3bb
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  a0ef2905003f474385ed9f6ad28d4d31:
+    id: a0ef2905003f474385ed9f6ad28d4d31
+    span:
+      start: 207
+      end: 208
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ' ཨུ་པ་དྷེ་ཤ་'
+        probability: null
+        features: null
+      narthang:
+        note: ' '
+        probability: null
+        features: null
+      derge:
+        note: ' '
+        probability: null
+        features: null
+      chone:
+        note: ' '
+        probability: null
+        features: null
+    printable: true
+  669ac96ca8c341138680f91b1b022aec:
+    id: 669ac96ca8c341138680f91b1b022aec
+    span:
+      start: 732
+      end: 739
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཞུག་པ་
+        probability: null
+        features: null
+      narthang:
+        note: གཞུག་པ་
+        probability: null
+        features: null
+      derge:
+        note: གཞུག་པ་
+        probability: null
+        features: null
+      chone:
+        note: གཞུག་པ་
+        probability: null
+        features: null
+    printable: true
+  a69fd093378d44b2a090c97eb1455dc2:
+    id: a69fd093378d44b2a090c97eb1455dc2
+    span:
+      start: 951
+      end: 955
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཏི་
+        probability: null
+        features: null
+      narthang:
+        note: སྟི་
+        probability: null
+        features: null
+      derge:
+        note: སྟི་
+        probability: null
+        features: null
+      chone:
+        note: སྟི་
+        probability: null
+        features: null
+    printable: true
+  8bef5bd6a8674556864ad71ffdec6f65:
+    id: 8bef5bd6a8674556864ad71ffdec6f65
+    span:
+      start: 964
+      end: 969
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: སིདྡྷི་
+        probability: null
+        features: null
+      narthang:
+        note: སིདྷི་
+        probability: null
+        features: null
+      derge:
+        note: སིདྷི་
+        probability: null
+        features: null
+      chone:
+        note: སིདྷི་
+        probability: null
+        features: null
+    printable: true
+  a4185b6d03cf4984ad45de06d2a764d3:
+    id: a4185b6d03cf4984ad45de06d2a764d3
+    span:
+      start: 1476
+      end: 1479
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: མུ་ཨ་
+        probability: null
+        features: null
+      narthang:
+        note: མུ་
+        probability: null
+        features: null
+      derge:
+        note: མུ་
+        probability: null
+        features: null
+      chone:
+        note: མུ་
+        probability: null
+        features: null
+    printable: true
+  6f4d5512edc445fbadd43347a07ec266:
+    id: 6f4d5512edc445fbadd43347a07ec266
+    span:
+      start: 1770
+      end: 1774
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཆར་
+        probability: null
+        features: null
+      narthang:
+        note: འཆར་
+        probability: null
+        features: null
+      derge:
+        note: འཆར་
+        probability: null
+        features: null
+      chone:
+        note: འཆར་
+        probability: null
+        features: null
+    printable: true
+  64d8092c819d42d28956a373220f3798:
+    id: 64d8092c819d42d28956a373220f3798
+    span:
+      start: 2101
+      end: 2108
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ཐམས་ཅད་ཅད་ཅིང་
+        probability: null
+        features: null
+      narthang:
+        note: ཐམས་ཅད་
+        probability: null
+        features: null
+      derge:
+        note: ཐམས་ཅད་
+        probability: null
+        features: null
+      chone:
+        note: ཐམས་ཅད་
+        probability: null
+        features: null
+    printable: true
+  2f89f8919e7f41cdbc9b63333d6b6235:
+    id: 2f89f8919e7f41cdbc9b63333d6b6235
+    span:
+      start: 2296
+      end: 2301
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: སྡུས་
+        probability: null
+        features: null
+      narthang:
+        note: སྡུད་
+        probability: null
+        features: null
+      derge:
+        note: སྡུད་
+        probability: null
+        features: null
+      chone:
+        note: སྡུད་
+        probability: null
+        features: null
+    printable: true
+  d2861770aab84cc49dfc8a29a9bdfa40:
+    id: d2861770aab84cc49dfc8a29a9bdfa40
+    span:
+      start: 2350
+      end: 2356
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: སྨ་བ་
+        probability: null
+        features: null
+      narthang:
+        note: དམའ་བ་
+        probability: null
+        features: null
+      derge:
+        note: དམའ་བ་
+        probability: null
+        features: null
+      chone:
+        note: དམའ་བ་
+        probability: null
+        features: null
+    printable: true
+  099bbd34ad8c4decb6b30971d6b6dc60:
+    id: 099bbd34ad8c4decb6b30971d6b6dc60
+    span:
+      start: 2979
+      end: 2983
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཞུག།
+        probability: null
+        features: null
+      narthang:
+        note: གཞུག
+        probability: null
+        features: null
+      derge:
+        note: གཞུག
+        probability: null
+        features: null
+      chone:
+        note: གཞུག
+        probability: null
+        features: null
+    printable: true
+  a32319fbe6e44e5bbe546f2468631135:
+    id: a32319fbe6e44e5bbe546f2468631135
+    span:
+      start: 3324
+      end: 3328
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: དངར་
+        probability: null
+        features: null
+      narthang:
+        note: མངར་
+        probability: null
+        features: null
+      derge:
+        note: མངར་
+        probability: null
+        features: null
+      chone:
+        note: མངར་
+        probability: null
+        features: null
+    printable: true
+  55430eacb0374303883ea329fe73916a:
+    id: 55430eacb0374303883ea329fe73916a
+    span:
+      start: 3369
+      end: 3376
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: རྟོགས་པ
+        probability: null
+        features: null
+      narthang:
+        note: གཏོགས་པ
+        probability: null
+        features: null
+      derge:
+        note: གཏོགས་པ
+        probability: null
+        features: null
+      chone:
+        note: གཏོགས་པ
+        probability: null
+        features: null
+    printable: true
+  7bc59868d5a447b7aefbe7038dce01b3:
+    id: 7bc59868d5a447b7aefbe7038dce01b3
+    span:
+      start: 3576
+      end: 3580
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཞུག།
+        probability: null
+        features: null
+      narthang:
+        note: གཞུག
+        probability: null
+        features: null
+      derge:
+        note: གཞུག
+        probability: null
+        features: null
+      chone:
+        note: གཞུག
+        probability: null
+        features: null
+    printable: true
+  44219adb5195458e9029d8611cb1158f:
+    id: 44219adb5195458e9029d8611cb1158f
+    span:
+      start: 3864
+      end: 3878
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: གཏིམ། །གཏིམ་
+        probability: null
+        features: null
+      narthang:
+        note: བསྟིམ། །བསྟིམ་
+        probability: null
+        features: null
+      derge:
+        note: བསྟིམ། །བསྟིམ་
+        probability: null
+        features: null
+      chone:
+        note: བསྟིམ། །བསྟིམ་
+        probability: null
+        features: null
+    printable: true
+  353089cb0991405f8ee86ce458518b7b:
+    id: 353089cb0991405f8ee86ce458518b7b
+    span:
+      start: 4041
+      end: 4046
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཞུག་
+        probability: null
+        features: null
+      narthang:
+        note: གཞུག་
+        probability: null
+        features: null
+      derge:
+        note: གཞུག་
+        probability: null
+        features: null
+      chone:
+        note: གཞུག་
+        probability: null
+        features: null
+    printable: true
+  8500a0ebf83147d289a1630207bb4f42:
+    id: 8500a0ebf83147d289a1630207bb4f42
+    span:
+      start: 4127
+      end: 4133
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: ལྟ་རེ
+        probability: null
+        features: null
+      narthang:
+        note: ལྟར་ཏེ
+        probability: null
+        features: null
+      derge:
+        note: ལྟར་ཏེ
+        probability: null
+        features: null
+      chone:
+        note: ལྟར་ཏེ
+        probability: null
+        features: null
+    printable: true
+  899672ef5ad84f5085774ff3ed52d96d:
+    id: 899672ef5ad84f5085774ff3ed52d96d
+    span:
+      start: 4518
+      end: 4522
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: རྟང་
+        probability: null
+        features: null
+      narthang:
+        note: བཏང་
+        probability: null
+        features: null
+      derge:
+        note: བཏང་
+        probability: null
+        features: null
+      chone:
+        note: བཏང་
+        probability: null
+        features: null
+    printable: true
+  7342f05c893f4087bf7891f93e185c59:
+    id: 7342f05c893f4087bf7891f93e185c59
+    span:
+      start: 5264
+      end: 5269
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: བཞུག་
+        probability: null
+        features: null
+      narthang:
+        note: གཞུག་
+        probability: null
+        features: null
+      derge:
+        note: གཞུག་
+        probability: null
+        features: null
+      chone:
+        note: གཞུག་
+        probability: null
+        features: null
+    printable: true
+  37bdf05d92ad4f6b8c4fa124ff0e79ae:
+    id: 37bdf05d92ad4f6b8c4fa124ff0e79ae
+    span:
+      start: 5357
+      end: 5366
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: མཛད་པའོ་།མངྒཱ་ལཾ།
+        probability: null
+        features: null
+      narthang:
+        note: མཛད་པའོ།།
+        probability: null
+        features: null
+      derge:
+        note: མཛད་པའོ།།
+        probability: null
+        features: null
+      chone:
+        note: མཛད་པའོ།།
+        probability: null
+        features: null
+    printable: true

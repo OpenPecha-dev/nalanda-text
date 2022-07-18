@@ -1,0 +1,108 @@
+id: f26326a59ef1476fa8c5f88f0ea41b0c
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  f5658918a0fb441cb1857845470be45a:
+    id: f5658918a0fb441cb1857845470be45a
+    span:
+      start: 3693
+      end: 3703
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: གཡས་སྐོར།
+        probability: null
+        features: null
+      narthang:
+        note: གཡས་བསྐོར་
+        probability: null
+        features: null
+      derge:
+        note: གཡས་བསྐོར་
+        probability: null
+        features: null
+      chone:
+        note: གཡས་བསྐོར་
+        probability: null
+        features: null
+    printable: true
+  b634ebe1dd704dcab487c806f4ca6882:
+    id: b634ebe1dd704dcab487c806f4ca6882
+    span:
+      start: 3770
+      end: 3775
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: གཅོད།
+        probability: null
+        features: null
+      narthang:
+        note: བཅོད་
+        probability: null
+        features: null
+      derge:
+        note: བཅོད་
+        probability: null
+        features: null
+      chone:
+        note: བཅོད་
+        probability: null
+        features: null
+    printable: true
+  4e24e4ddc929441f88441957fef86114:
+    id: 4e24e4ddc929441f88441957fef86114
+    span:
+      start: 4309
+      end: 4315
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: སྟོད།
+        probability: null
+        features: null
+      narthang:
+        note: བསྟོད་
+        probability: null
+        features: null
+      derge:
+        note: བསྟོད་
+        probability: null
+        features: null
+      chone:
+        note: བསྟོད་
+        probability: null
+        features: null
+    printable: true
+  9c52bb174ab745b392ad68cc410dd07e:
+    id: 9c52bb174ab745b392ad68cc410dd07e
+    span:
+      start: 4659
+      end: 4664
+      errors: {}
+    metadata: {}
+    default: narthang
+    options:
+      peking:
+        note: རྙེས།
+        probability: null
+        features: null
+      narthang:
+        note: སྙེས་
+        probability: null
+        features: null
+      derge:
+        note: སྙེས་
+        probability: null
+        features: null
+      chone:
+        note: སྙེས་
+        probability: null
+        features: null
+    printable: true

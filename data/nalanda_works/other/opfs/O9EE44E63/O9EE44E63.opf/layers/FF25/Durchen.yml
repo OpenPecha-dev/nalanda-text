@@ -1,0 +1,186 @@
+id: cd55999d9b354d888cdae2a2f309cbdf
+annotation_type: Durchen
+revision: '00001'
+annotations:
+  ea0e57644aee422e86f0732976f8ffe6:
+    id: ea0e57644aee422e86f0732976f8ffe6
+    span:
+      start: 366
+      end: 382
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: ལོ་ཐོག་ཕུན་ཚོགས་
+        probability: null
+        features: null
+      narthang:
+        note: ལོ་ཐོག་
+        probability: null
+        features: null
+      derge:
+        note: ལོ་ཐོག་ཕུན་ཚོགས་
+        probability: null
+        features: null
+      chone:
+        note: ལོ་ཐོག་ཕུན་ཚོགས་
+        probability: null
+        features: null
+    printable: true
+  171026f6d86049ffbfb3e5afbd96a805:
+    id: 171026f6d86049ffbfb3e5afbd96a805
+    span:
+      start: 2584
+      end: 2587
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: དེས
+        probability: null
+        features: null
+      narthang:
+        note: དེ
+        probability: null
+        features: null
+      derge:
+        note: དེས
+        probability: null
+        features: null
+      chone:
+        note: དེས
+        probability: null
+        features: null
+    printable: true
+  05d3031537ad4f7b8139254d907bf9c9:
+    id: 05d3031537ad4f7b8139254d907bf9c9
+    span:
+      start: 16823
+      end: 16829
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: ཇི་ལྟ་
+        probability: null
+        features: null
+      narthang:
+        note: ཇི་ལྟ་བ་
+        probability: null
+        features: null
+      derge:
+        note: ཇི་ལྟ་
+        probability: null
+        features: null
+      chone:
+        note: ཇི་ལྟ་
+        probability: null
+        features: null
+    printable: true
+  e4b5de7d835f4ffa8076773c350806aa:
+    id: e4b5de7d835f4ffa8076773c350806aa
+    span:
+      start: 25798
+      end: 25802
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: ཁྱབ་
+        probability: null
+        features: null
+      narthang:
+        note: ཁྱད་
+        probability: null
+        features: null
+      derge:
+        note: ཁྱབ་
+        probability: null
+        features: null
+      chone:
+        note: ཁྱབ་
+        probability: null
+        features: null
+    printable: true
+  e638ce769afe4ce0976fe2a9c3492150:
+    id: e638ce769afe4ce0976fe2a9c3492150
+    span:
+      start: 25965
+      end: 25968
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: ཕྱི
+        probability: null
+        features: null
+      narthang:
+        note: ཕྱིར
+        probability: null
+        features: null
+      derge:
+        note: ཕྱི
+        probability: null
+        features: null
+      chone:
+        note: ཕྱི
+        probability: null
+        features: null
+    printable: true
+  92badb66bb7a4100b48ae485c2b5441c:
+    id: 92badb66bb7a4100b48ae485c2b5441c
+    span:
+      start: 34260
+      end: 34265
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: བཅོལ་
+        probability: null
+        features: null
+      narthang:
+        note: གཙོལ་
+        probability: null
+        features: null
+      derge:
+        note: བཅོལ་
+        probability: null
+        features: null
+      chone:
+        note: བཅོལ་
+        probability: null
+        features: null
+    printable: true
+  b11a2058ea054757a34b089fea9bde1f:
+    id: b11a2058ea054757a34b089fea9bde1f
+    span:
+      start: 36977
+      end: 36983
+      errors: {}
+    metadata: {}
+    default: peking
+    options:
+      peking:
+        note: ཅད་ཀྱི
+        probability: null
+        features: null
+      narthang:
+        note: ཅད་ཀྱིས
+        probability: null
+        features: null
+      derge:
+        note: ཅད་ཀྱི
+        probability: null
+        features: null
+      chone:
+        note: ཅད་ཀྱི
+        probability: null
+        features: null
+    printable: true
