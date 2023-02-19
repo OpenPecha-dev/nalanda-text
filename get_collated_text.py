@@ -30,7 +30,7 @@ def has_batch_note(collated_text):
     
 
 if __name__ == "__main__":
-    philo = "07-Shantarakshita"
+    philo = "09-Asanga"
     collated_text = Path(f'./data/nalanda_works/{philo}/{philo}_text_list.txt').read_text(encoding='utf-8')
     collated_text_ids = collated_text.splitlines()
     collated_text_ids = list(set(collated_text_ids))
